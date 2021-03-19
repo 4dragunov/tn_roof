@@ -1,24 +1,42 @@
 from django.contrib import admin
+
 from .models import (
     Building,
     Sensor,
-    Value
+    SensorValues,
+    Sens
 )
+
+
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
     list_display = (
         'title',
     )
+
+
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
     list_display = (
         'pin_number',
-        'building'
     )
-@admin.register(Value)
+
+
+@admin.register(Sens)
 class ValueAdmin(admin.ModelAdmin):
     list_display = (
-        'sensor',
+        'title',
+    )
+
+
+@admin.register(SensorValues)
+class SensorValuesAdmin(admin.ModelAdmin):
+
+    list_display = (
         'value',
-        'pub_date'
+        'sens_uid',
+        'building',
+        'pin_number',
+        'pub_date',
+        'sens'
     )
