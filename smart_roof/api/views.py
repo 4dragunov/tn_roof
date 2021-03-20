@@ -1,28 +1,47 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from sensors.models import Building, Sensor, Value
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+
+from rest_framework.serializers import RelatedField
+from rest_framework import serializers
+
+from sensors.models import *
+
+
+def get_objects_id(model, filters):
+    return model.objects.filter(**filters)[0].id
+
 
 class DataSend(APIView):
-
     def post(self, request):
-        # print(request.data)
-        building_title = request.data.get('building')
-        building = Building.objects.get_or_create(title=building_title)
-        device = request.data.get('device')
-        device_number = request.data.get('device')[0]['number']
-        sensor_count =  request.data.get('device')[1]['sensor_count']
-        for i in range(2, sensor_count+2):
-            sensor_value = request.data.get('device')[i][f'sensor_{i-1}']
-            print(sensor_value)
 
+        building = request.data['building']
+        pin_number = request.data['pin_number']
+        count = request.data['count_sens']
 
+        for _ in request.data['sensors']:
+            sens = _['sens']
+            sens_uid = _['uid']
+            value = _['value']
 
-        print(building)
-        print(device)
-        print(device_number)
-        print(sensor_count)
-        # sensor_id = request.data.get('sensor_id')
-        # values = request.data.get('values')
+            SensorValues.objects.create(
+                sens_uid=sens_uid,
+                value=value,
+                building_id=get_objects_id(
+                    Building,
+                    {"title": building}
+                ),
+                pin_number_id=get_objects_id(
+                    Sensor,
+                    {"pin_number": pin_number}),
+                sens_id=get_objects_id(
+                    Sens,
+                    {"title": sens}
+                ),
+            )
 
         return Response({'message': 'Привет, мир!'})
+
