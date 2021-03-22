@@ -4,7 +4,6 @@ from .models import (
     Building,
     Sensor,
     SensorValues,
-    Sens
 )
 
 
@@ -12,31 +11,34 @@ from .models import (
 class BuildingAdmin(admin.ModelAdmin):
     list_display = (
         'title',
+        'adress'
     )
+
 
 
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
     list_display = (
-        'pin_number',
+        'sens_uid',
+        'building',
+        'values_count'
     )
 
+    def values_count(self, obj):
+        return SensorValues.objects.filter(sensor_id=obj).count()
 
-@admin.register(Sens)
-class ValueAdmin(admin.ModelAdmin):
-    list_display = (
-        'title',
-    )
+    values_count.short_description = 'Число показаний'
+
+
+
 
 
 @admin.register(SensorValues)
 class SensorValuesAdmin(admin.ModelAdmin):
 
     list_display = (
+        'sensor',
         'value',
-        'sens_uid',
-        'building',
-        'pin_number',
         'pub_date',
-        'sens'
     )
+
