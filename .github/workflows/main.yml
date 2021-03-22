@@ -52,10 +52,10 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
           script: |
             cd tn_roof
-            sudo mv env .env
-            sudo docker-compose stop
-            sudo docker-compose rm web
-            sudo docker-compose up -d
+            sudo mv example_env .env
+            sudo docker pull ${{ secrets.DOCKER_LOGIN }}/tn_roof:latest
+            sudo docker-compose up --force-recreate --no-deps -d web
+            sudo docker image prune -f
 
 
 
