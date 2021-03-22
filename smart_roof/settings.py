@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '178.154.204.140', '0.0.0.0']
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'api',
     'users',
