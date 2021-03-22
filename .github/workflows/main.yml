@@ -53,7 +53,7 @@ jobs:
           script: |
             cd tn_roof
             sudo mv env .env
-            sudo docker pull ${{ secrets.DOCKER_LOGIN }}/tn_roof:latest
+            sudo docker pull 4dragunov/tn_roof:latest
             sudo docker-compose up --force-recreate --no-deps -d web
             sudo docker image prune -f
 
