@@ -5,8 +5,9 @@ from sensors.models import SensorValues, Sensor, Building
 def index(request):
     '''Вьюха отображения главной страницы'''
     # получаем список тегов из GET запроса
-    buildings = Building.objects.all()
+    # buildings = Building.objects.all()
 
     data = 'привет'
     return render(request, 'index.html', context={'data': data,
-                                                  'buildings':buildings})
+                                                  # 'buildings':buildings
+                                                  })
