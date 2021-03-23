@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # {
 #     "building": "DOM1337",
 #     "pin_number": "v12452434",
@@ -41,7 +42,6 @@ class Building(models.Model):
         verbose_name='Адрес объекта'
     )
 
-
     def __str__(self):
         return self.title
 
@@ -66,9 +66,6 @@ class Sensor(models.Model):
     def __str__(self):
         return self.sens_uid
 
-
-
-
     class Meta:
         verbose_name = "Датчик"
         verbose_name_plural = "Датчики"
@@ -85,7 +82,6 @@ class SensorValues(models.Model):
         verbose_name='Показание',
     )
 
-
     pub_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата показания',
@@ -94,7 +90,6 @@ class SensorValues(models.Model):
     class Meta:
         verbose_name = "Показания датчиков"
         verbose_name_plural = "Показания датчиков"
-
 
     def __str__(self):
         return f'{self.sensor} ({self.value})'
