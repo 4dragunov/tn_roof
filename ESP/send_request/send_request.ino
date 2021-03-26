@@ -10,6 +10,7 @@ float data;
 const char* ssid = "Keenetic-6399"; //Enter SSID
 const char* password = "DxHGLBwT"; //Enter Password
 String serverName = "http://127.0.0.1:8000";
+float last_value = 0;
 
 void setup() {
   scale.begin(DOUT_PIN, SCK_PIN);                             // инициируем работу с датчиком
@@ -31,7 +32,7 @@ void setup() {
 }
 
 void loop() {
-  data = scale.get_units(20);
+  data = scale.get_units(20) + last_value;
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
 
     StaticJsonBuffer<300> JSONbuffer;   //Declaring static JSON buffer

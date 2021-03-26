@@ -29,8 +29,9 @@ class DataSend(APIView):
                 last_value_in_db = SensorValues.objects.filter(
                     sensor=sensor).latest('pub_date').get_value()
                 last_value_in_db = float(last_value_in_db)
-                # увеличиваем
+                # увеличиваем запись на последнее значение
                 value = value + last_value_in_db
+                # передаем последнее значение на весы
                 last_value = value
 
         else: # если дебаг (не берем последние значения из базы)
