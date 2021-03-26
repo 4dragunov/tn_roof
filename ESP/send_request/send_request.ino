@@ -7,7 +7,6 @@
 HX711 scale;
 float calibration_factor = -20.7;  // вводим калибровочный коэффициент
 float data;
-
 const char* ssid = "Keenetic-6399"; //Enter SSID
 const char* password = "DxHGLBwT"; //Enter Password
 String serverName = "http://127.0.0.1:8000";
@@ -26,6 +25,7 @@ void setup() {
     delay(500);
     Serial.println("Waiting for connection");
 
+  
   }
 
 }
@@ -56,6 +56,15 @@ void loop() {
 
     Serial.println(httpCode);   //Print HTTP return code
     Serial.println(payload);    //Print request response payload
+    if (httpCode > 0) {
+      // Parsing
+      
+      const size_t bufferSize = 400;
+      DynamicJsonBuffer jsonBuffer(bufferSize);
+      
+      
+      
+      }
 
     http.end();  //Close connection
 

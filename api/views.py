@@ -34,4 +34,5 @@ class DataSend(APIView):
                              'last_value': value})
 
         SensorValues.objects.create(sensor=sensor, value=value)
-        return Response({'message': 'Success!'})
+        return Response({'message': 'Success!',
+                         'last_value': 1000})
