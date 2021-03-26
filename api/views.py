@@ -20,10 +20,10 @@ class DataSend(APIView):
     def post(self, request):
         sensor_uid = request.data['sensor_uid'] # получаем sensor_uid из json
         value = float(request.data['value'])  # получаем value из json
-        zero_data = float(request.data['zero_data'])
+        zero_data = float(request.data['zero_data']) #  нуль для датчика
         is_debug = bool(request.data['is_debug'])
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
-        if is_debug:
+        if not is_debug:
             if value < zero_data:
                 last_value_in_db = SensorValues.objects.filter(
                     sensor=sensor).latest('pub_date').get_value()
