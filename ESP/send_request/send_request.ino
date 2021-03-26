@@ -37,7 +37,7 @@ void loop() {
     StaticJsonBuffer<300> JSONbuffer;   //Declaring static JSON buffer
     JsonObject& JSONencoder = JSONbuffer.createObject();
 
-    JSONencoder["building"] = "Pentagon";
+//     JSONencoder["building"] = "Pentagon";
     JSONencoder["sensor_uid"] = "x000001";
     JSONencoder["value"] = data;
 
@@ -48,7 +48,7 @@ void loop() {
 
     HTTPClient http;    //Declare object of class HTTPClient
 
-    http.begin("http://178.154.200.58/api/v1/send/");      //Specify request destination
+    http.begin("http://178.154.201.111/api/v1/send/");      //Specify request destination
     http.addHeader("Content-Type", "application/json");  //Specify content-type header
 
     int httpCode = http.POST(JSONmessageBuffer);   //Send the request

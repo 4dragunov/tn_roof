@@ -71,6 +71,7 @@ class Sensor(models.Model):
         verbose_name_plural = "Датчики"
 
 
+
 class SensorValues(models.Model):
     sensor = models.ForeignKey(
         Sensor,
@@ -90,6 +91,10 @@ class SensorValues(models.Model):
     class Meta:
         verbose_name = "Показания датчиков"
         verbose_name_plural = "Показания датчиков"
+        ordering = ("-pub_date",)
 
     def __str__(self):
-        return f'{self.sensor} ({self.value})'
+        return f'{self.value}'
+
+    def get_value(self):
+        return self.value

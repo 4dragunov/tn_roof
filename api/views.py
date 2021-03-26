@@ -18,41 +18,20 @@ def get_objects_id(model, filters):
 class DataSend(APIView):
 
     def post(self, request):
-        print(request.data)
-
-        building = request.data['building']
-        sensor_uid = request.data['sensor_uid']
-        value = request.data['value']
-
-        print(building)
-        print(sensor_uid)
-        print(value)
+        sensor_uid = request.data['sensor_uid'] # получаем sensor_uid из json
+        value = float(request.data['value'])  # получаем value из json
 
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
+        if value < 1:
+            last_value_in_db = SensorValues.objects.filter(
+                sensor=sensor).latest('pub_date').get_value()
+            last_value_in_db = float(last_value_in_db)
+
+            value = value + last_value_in_db
+            SensorValues.objects.create(sensor=sensor, value=value)
+
+            return Response({'message': 'Success!',
+                             'last_value': value})
 
         SensorValues.objects.create(sensor=sensor, value=value)
-
-#
-#         for _ in request.data['sensors']:
-#             sens = _['sens']
-#             sens_uid = _['uid']
-#             value = _['value']
-#
-#             SensorValues.objects.create(
-#                 sens_uid=sens_uid,
-#                 value=value,
-#                 building_id=get_objects_id(
-#                     Building,
-#                     {"title": building}
-#                 ),
-#                 pin_number_id=get_objects_id(
-#                     Sensor,
-#                     {"pin_number": pin_number}),
-#                 sens_id=get_objects_id(
-#                     Sens,
-#                     {"title": sens}
-#                 ),
-#             )
-#
         return Response({'message': 'Success!'})
-#
