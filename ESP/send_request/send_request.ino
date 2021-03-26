@@ -41,6 +41,7 @@ void loop() {
     JSONencoder["sensor_uid"] = "x000001";
     JSONencoder["value"] = data;
     JSONencoder["zero_data"] = 500;
+    JSONencoder["is_debug"] = 1;
 
 
     char JSONmessageBuffer[300];

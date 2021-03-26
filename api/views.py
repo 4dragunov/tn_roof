@@ -21,18 +21,20 @@ class DataSend(APIView):
         sensor_uid = request.data['sensor_uid'] # получаем sensor_uid из json
         value = float(request.data['value'])  # получаем value из json
         zero_data = float(request.data['zero_data'])
+        is_debug = bool(request.data['is_debug'])
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
-        if value < zero_data:
-            last_value_in_db = SensorValues.objects.filter(
-                sensor=sensor).latest('pub_date').get_value()
-            last_value_in_db = float(last_value_in_db)
+        if is_debug:
+            if value < zero_data:
+                last_value_in_db = SensorValues.objects.filter(
+                    sensor=sensor).latest('pub_date').get_value()
+                last_value_in_db = float(last_value_in_db)
 
-            value = value + last_value_in_db
+                value = value + last_value_in_db
+                last_value = value
+
+        else:
             SensorValues.objects.create(sensor=sensor, value=value)
+            last_value = -1
 
-            return Response({'message': 'Success!',
-                             'last_value': value})
-
-        SensorValues.objects.create(sensor=sensor, value=value)
         return Response({'message': 'Success!',
-                         'last_value': -1})
+                         'last_value': last_value})
