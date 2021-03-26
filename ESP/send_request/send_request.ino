@@ -40,6 +40,7 @@ void loop() {
 //     JSONencoder["building"] = "Pentagon";
     JSONencoder["sensor_uid"] = "x000001";
     JSONencoder["value"] = data;
+    JSONencoder["zero_data"] = 500;
 
 
     char JSONmessageBuffer[300];
@@ -52,15 +53,27 @@ void loop() {
     http.addHeader("Content-Type", "application/json");  //Specify content-type header
 
     int httpCode = http.POST(JSONmessageBuffer);   //Send the request
-    String payload = http.getString();                                        //Get the response payload
 
     Serial.println(httpCode);   //Print HTTP return code
-    Serial.println(payload);    //Print request response payload
     if (httpCode > 0) {
-      // Parsing
       
+      // Parsing
       const size_t bufferSize = 400;
       DynamicJsonBuffer jsonBuffer(bufferSize);
+      JsonObject& root = jsonBuffer.parseObject(http.getString());
+      
+      const char* message = root["message"];
+      float last_value = root["last_value"];
+      Serial.print("message:");
+      Serial.print(message);
+      Serial.print("last_value:");
+      Serial.print(last_value);
+
+      if (last_value > 0) {
+        data = data + last_value;
+      }
+      
+      
       
       
       
