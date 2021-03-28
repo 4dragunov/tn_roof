@@ -18,7 +18,7 @@ def index(request):
 def lk(request):
     labels = []
     data = []
-
+    
     queryset = SensorValues.objects.filter(sensor_id=1)
     for _ in queryset:
         labels.append((_.pub_date).strftime('%m/%d/%Y'))
