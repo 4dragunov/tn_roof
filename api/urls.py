@@ -4,7 +4,7 @@ from .views import DataSend, DataGet
 v1_patterns = (
     [
        path('send/', DataSend.as_view()),
-       path('get/(?P<sensor_uid>\d+)', DataGet.as_view()),
+       path('get/', DataGet.as_view()),
 
 
 

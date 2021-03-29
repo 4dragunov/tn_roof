@@ -43,7 +43,8 @@ class DataSend(APIView):
 
 class DataGet(APIView):
 
-    def get(self, request, sensor_uid):
+    def post(self, request):
+        sensor_uid = request.data['sensor_uid']
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
         last_value = SensorValues.objects.filter(
             sensor=sensor).latest('pub_date').get_value()
