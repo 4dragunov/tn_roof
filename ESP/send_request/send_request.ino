@@ -18,7 +18,7 @@ void setup() {
   scale.tare();                                               // сбрасываем значения веса на датчике в 0
   scale.set_scale(calibration_factor);                        // устанавливаем калибровочный коэффициент
 
-  Serial.begin(115200);          //Serial connection
+  Serial.begin(9600);          //Serial connection
   WiFi.begin(ssid, password);   //WiFi connection
 
   while (WiFi.status() != WL_CONNECTED) {  //Wait for the WiFI connection completion

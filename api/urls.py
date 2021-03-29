@@ -1,9 +1,12 @@
 from django.urls import include, path
-from .views import DataSend
+from .views import DataSend, DataGet
 
 v1_patterns = (
     [
-       path('send/', DataSend.as_view())
+       path('send/', DataSend.as_view()),
+       path('get/(?P<sensor_uid>\d+)', DataGet.as_view()),
+
+
 
     ]
 )
