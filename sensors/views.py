@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from sensors.models import SensorValues, Sensor, Building
 
-from datetime import date
+from datetime import date, datetime
 import pandas as pd
 import numpy as np
 
-# Create your views here.
 
 
 def index(request):
@@ -19,32 +18,30 @@ def index(request):
                                                   })
 
 
-# def objects_to_df(model, fields=None, exclude=None, date_cols=None, **kwargs):
-#     if not fields:
-#         fields = [field.name for field in model._meta.get_fields()]
 
-#     if exclude:
-#         fields = [field for field in fields if field not in exclude]
-#     print(fields)
-#     records = model.objects.filter(**kwargs).values_list(*fields)
-#     df = pd.DataFrame(list(records), columns=fields)
+#request_date = date(2021, 3, 29)
 
+def get_charts(model, filters):
+    quaryset = model.objects.filter(**filters).values_list()
+    df = pd.DataFrame(list(quaryset), columns=['id', 'sensor', 'value', 'pub_date'])
 
-#     if date_cols:
-#         strftime = date_cols.pop(0)
-#         for date_col in date_cols:
-#             df[date_col] = df[date_col].apply(lambda x: x.strftime(strftime))
+    return df
 
-#     return df
 
 
 def lk(request):
-
-    request_date = date(2021, 3, 28)
     request_sensor_id = 1
+    if not request.GET:
+        request_date = datetime.now().date()
+        df = get_charts(SensorValues,{"sensor_id":request_sensor_id, "pub_date__contains":request_date})
+    if "date" in request.GET:
+        request_date = (datetime.strptime(request.GET['date'], '%Y-%m-%d')).date()
+        df = get_charts(SensorValues,{"sensor_id":request_sensor_id, "pub_date__contains":request_date})
+    print(request_date)
 
-    quaryset = SensorValues.objects.filter(sensor_id=request_sensor_id, pub_date__contains=request_date).values_list()
-    df = pd.DataFrame(list(quaryset), columns=['id', 'sensor', 'value', 'pub_date'])
+    #quaryset = SensorValues.objects.filter(sensor_id=request_sensor_id, pub_date__contains=request_date).values_list()
+    #df = pd.DataFrame(list(quaryset), columns=['id', 'sensor', 'value', 'pub_date'])
+    
 
     labels = [_.strftime("%H:%M:%S") for _ in df['pub_date']]
     data = [_ for _ in df['value']]
@@ -54,6 +51,51 @@ def lk(request):
         request,
         'lk.html',
         {
-            'labels': labels,
-            'data': data,
+            'labels': sorted(labels),
+            'data': sorted(data),
         })
+
+
+
+# if not request.GET['date']:
+#         request_date = datetime.now().strftime("%Y,%m,%d")
+#     request_date = (datetime.strptime(request.GET['date'], '%Y-%m-%d')).strftime("%Y,%m,%d")
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def lk(request):
+#     request_sensor_id = 2
+#     if not request.GET:
+#         request_date = datetime.now().date()
+
+
+#     quaryset = SensorValues.objects.filter(sensor_id=request_sensor_id, pub_date__contains=request_date).values_list()
+#     df = pd.DataFrame(list(quaryset), columns=['id', 'sensor', 'value', 'pub_date'])
+
+#     labels = [_.strftime("%H:%M:%S") for _ in df['pub_date']]
+#     data = [_ for _ in df['value']]
+
+
+#     return render(
+#         request,
+#         'lk.html',
+#         {
+#             'labels': sorted(labels),
+#             'data': sorted(data),
+#         })
+
+
+
+# if not request.GET['date']:
+#         request_date = datetime.now().strftime("%Y,%m,%d")
+#     request_date = (datetime.strptime(request.GET['date'], '%Y-%m-%d')).strftime("%Y,%m,%d")
