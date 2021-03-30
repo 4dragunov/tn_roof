@@ -10,6 +10,8 @@ from rest_framework import serializers
 
 from sensors.models import *
 
+from .weather_utils import get_weather
+
 
 def get_objects_id(model, filters):
     return model.objects.filter(**filters)[0].id
@@ -23,6 +25,9 @@ class DataSend(APIView):
         zero_data = float(request.data['zero_data'])  # нуль для датчика
         is_debug = bool(int(request.data['is_debug']))
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
+        building = sensor.building.pk
+        building = sensor.building
+
         if not is_debug:  # если боевой режим
             if value < zero_data:  # если значение около 0 (100г, 200...)
                 # берем последнее значение из базы
@@ -36,6 +41,10 @@ class DataSend(APIView):
 
         else:  # если дебаг (не берем последние значения из базы)
             last_value = -1
+        temperature, snow = get_weather(building) #получаем данные прогноза
+        Weather.objects.create(building=building,
+                               temperature=float(temperature),
+                               snow=float(snow)) # создаем запись в бд
         SensorValues.objects.create(sensor=sensor, value=value)
         return Response({'message': 'Success!',
                          'last_value': last_value})

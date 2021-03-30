@@ -4,6 +4,7 @@ from .models import (
     Building,
     Sensor,
     SensorValues,
+    Weather
 )
 
 
@@ -13,7 +14,6 @@ class BuildingAdmin(admin.ModelAdmin):
         'title',
         'adress'
     )
-
 
 
 @admin.register(Sensor)
@@ -30,15 +30,21 @@ class SensorAdmin(admin.ModelAdmin):
     values_count.short_description = 'Число показаний'
 
 
-
-
-
 @admin.register(SensorValues)
 class SensorValuesAdmin(admin.ModelAdmin):
-
     list_display = (
         'sensor',
         'value',
         'pub_date',
     )
 
+
+@admin.register(Weather)
+class WeatherAdmin(admin.ModelAdmin):
+    list_display = (
+        'building',
+        'temperature',
+        'snow',
+        'pub_date',
+
+    )
