@@ -1,34 +1,7 @@
 from django.db import models
 
 
-# {
-#     "building": "DOM1337",
-#     "pin_number": "v12452434",
-#     "count_sens":3,
-#     "sensors":[
-#         {
-#         "sens": "FIRE_SENS",
-#         "uid":"v2002",
-#         "value":555
-#     },
-#     {
-#         "sens": "WATER_SENS",
-#         "uid":"v2000",
-#         "value":4344
-#     },
-#     {
-#         "sens": "SNOW_SENS",
-#         "uid":"v2001",
-#         "value":4444
-#     }
-#     ]
-# }
 
-# {
-#     "building": "Pentagon",
-#     "sensor_uid" : "x000001",
-#     "value": "234.32"
-# }
 class Building(models.Model):
     title = models.CharField(
         unique=True,

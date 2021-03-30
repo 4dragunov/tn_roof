@@ -7,6 +7,7 @@ from pyowm import OWM
 owm = OWM('5b18d8916b3c773ff764614d3cd8f8c2')
 mgr = owm.weather_manager()
 
+
 def get_weather(building):
     building = get_object_or_404(Building, title=building)
     lat = building.coordinates_lat
