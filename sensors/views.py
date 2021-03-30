@@ -82,15 +82,14 @@ def lk(request):
         )
 
 
-    labels = [_.strftime("%H:%M:%S") for _ in df['pub_date']].reverse()
-    data = [_ for _ in df['value']].reverse()
+    labels = list(reversed([_.strftime("%H:%M:%S") for _ in df['pub_date']]))
+    data = list(reversed([_ for _ in df['value']]))
 
-    labels_temp = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']].reverse()
-    data_temp = [_ for _ in df_temp['temperature']].reverse()
+    labels_temp = list(reversed([_.strftime("%H:%M:%S") for _ in df_temp['pub_date']]))
+    data_temp = list(reversed([_ for _ in df_temp['temperature']]))
 
-    labels_snow = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']].reverse()
-    data_snow = [_ for _ in df_temp['snow']].reverse()
-
+    labels_snow = list(reversed([_.strftime("%H:%M:%S") for _ in df_temp['pub_date']]))
+    data_snow = list(reversed([_ for _ in df_temp['snow']]))
 
 
     return render(
