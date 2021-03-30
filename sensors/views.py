@@ -82,14 +82,14 @@ def lk(request):
         )
 
 
-    labels = [_.strftime("%H:%M:%S") for _ in df['pub_date']]
-    data = [_ for _ in df['value']]
+    labels = [_.strftime("%H:%M:%S") for _ in df['pub_date']].reverse()
+    data = [_ for _ in df['value']].reverse()
 
-    labels_temp = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']]
-    data_temp = [_ for _ in df_temp['temperature']]
+    labels_temp = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']].reverse()
+    data_temp = [_ for _ in df_temp['temperature']].reverse()
 
-    labels_snow = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']]
-    data_snow = [_ for _ in df_temp['snow']]
+    labels_snow = [_.strftime("%H:%M:%S") for _ in df_temp['pub_date']].reverse()
+    data_snow = [_ for _ in df_temp['snow']].reverse()
 
 
 
@@ -97,11 +97,11 @@ def lk(request):
         request,
         'lk.html',
         {
-            'labels': sorted(labels),
-            'data': sorted(data),
-            'labels_temp':sorted(labels_temp),
-            'data_temp':sorted(data_temp),
-            'labels_snow':sorted(labels_snow),
-            'data_snow':sorted(data_snow)
+            'labels': labels,
+            'data': data,
+            'labels_temp':labels_temp,
+            'data_temp':data_temp,
+            'labels_snow':labels_snow,
+            'data_snow':data_snow
         })
 
