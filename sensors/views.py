@@ -99,9 +99,9 @@ def lk(request):
         {
             'labels': sorted(labels),
             'data': sorted(data),
-            'labels_temp':labels_temp,
-            'data_temp':data_temp,
-            'labels_snow':labels_snow,
-            'data_snow':data_snow
+            'labels_temp':sorted(labels_temp),
+            'data_temp':sorted(data_temp),
+            'labels_snow':sorted(labels_snow),
+            'data_snow':sorted(data_snow)
         })
 
