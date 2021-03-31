@@ -1,18 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from sensors.models import SensorValues, Sensor, Building, Weather
 
 from datetime import date, datetime
 import pandas as pd
 import numpy as np
+from .forms import SensorForm
 
 
 def index(request):
     '''Вьюха отображения главной страницы'''
     # получаем список тегов из GET запроса
     # buildings = Building.objects.all()
+    if request.method == 'POST':
+        form = SensorForm(request.POST)
+        # request_sensor_id = form.data['sens_uid']
+        # print(request_sensor_id)
+        if form.is_valid():
+            # Обработка
+            request_sensor_id=form.data['sens_uid']
+            print(request_sensor_id)
+            # form.save()  # сохранение  модели
+            return redirect('lk2', request_sensor_id)
+    else:
+        form = SensorForm()
 
     data = 'привет'
     return render(request, 'index.html', context={'data': data,
+                                                  'form':form
                                                   # 'buildings':buildings
                                                   })
 
@@ -53,8 +67,11 @@ class ChartsData:
         return context_charts
 
 
-def lk(request):
-    request_sensor_id = 1
+def lk(request, pk):
+    if pk:
+        request_sensor_id = pk
+    else:
+        request_sensor_id = 1
     building = 1
 
     if not request.GET:

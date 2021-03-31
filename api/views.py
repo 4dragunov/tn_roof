@@ -25,7 +25,6 @@ class DataSend(APIView):
         zero_data = float(request.data['zero_data'])  # нуль для датчика
         is_debug = bool(int(request.data['is_debug']))
         sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
-        building = sensor.building.pk
         building = sensor.building
 
         if not is_debug:  # если боевой режим

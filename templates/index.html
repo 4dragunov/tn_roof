@@ -5,12 +5,19 @@
     <title>Title</title>
 </head>
 <body>
- {{data}}
-<!--{% for building in buildings %}-->
-<!-- {{building}}-->
-<!-- {{ building.}}-->
-<!--{% endfor %}-->
+{{data}}
+
 <a href="{% url 'lk' %}">График</a>
+<br>
+
+<form method="POST">{% csrf_token %}
+        {{ form }}
+
+    <button>
+        Посмотреть данные
+    </button>
+
+</form>
 
 </body>
 </html>
