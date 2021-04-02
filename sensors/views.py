@@ -31,17 +31,6 @@ def index(request):
                                                   })
 
 
-def get_charts(model, filters):
-    fields_model = [f.name for f in model._meta.get_fields()]
-    quaryset = model.objects.filter(**filters).values_list()
-    df = pd.DataFrame(
-        list(quaryset),
-        columns=fields_model
-    )
-
-    return df
-
-
 class ChartsData:
 
     def __init__(self, model, model_filter):
@@ -67,12 +56,10 @@ class ChartsData:
         return context_charts
 
 
-def lk(request, pk):
-    if pk:
-        request_sensor_id = pk
-    else:
-        request_sensor_id = 1
+def lk(request):
     building = 1
+
+    sens_id = [i for i in list(Sensor.objects.filter(building_id=building).values())]
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -84,30 +71,36 @@ def lk(request, pk):
             request_date = (datetime.strptime(
                 request.GET['date'], '%Y-%m-%d')).date()
 
-    filter_model_sensorsvalues = {
-        "sensor_id": request_sensor_id,
-        "pub_date__contains": request_date
-    }
+
     filter_model_weather = {
         "building": building,
         "pub_date__contains": request_date
     }
 
-    charts_sensors_values = ChartsData(
-        SensorValues,
-        filter_model_sensorsvalues
-    )
     charts_weather_api = ChartsData(
         Weather,
         filter_model_weather
     )
 
+    data = []
+    for i in sens_id:
+        filter_model_sensorsvalues = {
+            "sensor_id": int(i['id']),
+            "pub_date__contains": request_date
+        }
+        charts_sensors_values = ChartsData(
+            SensorValues,
+            filter_model_sensorsvalues
+        )
+        data.append([i['sens_uid'],charts_sensors_values.get_data_kwargs('value')])
+
+
     return render(
         request,
         'lk.html',
         {
+            'data': data,
             'labels': charts_sensors_values.get_date_kwargs('pub_date'),
-            'data': charts_sensors_values.get_data_kwargs('value'),
             'labels_temp': charts_weather_api.get_date_kwargs('pub_date'),
             'data_temp': charts_weather_api.get_data_kwargs('temperature'),
             'labels_snow': charts_weather_api.get_date_kwargs('pub_date'),
@@ -123,7 +116,7 @@ def lk2(request, pk):
         request_sensor_id = 1
     building = 1
     charts_sensors_values_1 = []
-    request_sensor_id = [1,2]
+    request_sensor_id = [1, 2]
 
     if not request.GET:
         request_date = datetime.now().date()
