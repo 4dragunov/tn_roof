@@ -191,34 +191,30 @@
 
 <script>
 
-var speedCanvas = document.getElementById("snow_sens");
+//var speedCanvas = document.getElementById("snow_sens");
 
-Chart.defaults.global.defaultFontFamily = "Lato";
-Chart.defaults.global.defaultFontSize = 18;
+var data = {{ data|safe }}
+let datasets = []
 
-var speedData = {
-  labels: {{ labels|safe }},
-  datasets: [{
-    label: "Давление снега",
-    data: {{ data|safe }},
-  }]
-};
+for (let item of data) {
+  datasets.push({data: item[1],label:item[0],borderColor: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),fill: false});
+}
 
-var chartOptions = {
-  legend: {
-    display: true,
-    position: 'top',
-    labels: {
-      boxWidth: 80,
-      fontColor: 'black'
+
+//var dataset = [{data: data[1],label: "Africa",borderColor: "#3e95cd",fill: false}]
+
+new Chart(document.getElementById("snow_sens"), {
+  type: 'line',
+  data: {
+    labels: {{labels|safe}},
+    datasets: datasets
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Amochkin number 1'
     }
   }
-};
-
-var lineChart = new Chart(speedCanvas, {
-  type: 'bar',
-  data: speedData,
-  options: chartOptions
 });
 
 </script>
