@@ -14,26 +14,26 @@ services:
       - ./.env
   web:
     image: 4dragunov/tn_roof:latest
-#    build: .
+    #    build: .
     restart: always
     command: gunicorn smart_roof.wsgi:application --bind 0.0.0.0:8000
     expose:
       - 8000
     depends_on:
       - db
-    env:
-#      DB_ENGINE: ${{ secrets.DB_ENGINE }}
-#      DB_NAME: ${{ secrets.DB_NAME }}
-#      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-#      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-#      DB_HOST: ${{ secrets.DB_HOST }}
-#      DB_PORT: ${{ secrets.DB_PORT }}
-      twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
-      twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
-      NUMBER_FROM: ${{ secrets.NUMBER_FROM }}
+    environment:
+      #      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      #      DB_NAME: ${{ secrets.DB_NAME }}
+      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      #      DB_HOST: ${{ secrets.DB_HOST }}
+      #      DB_PORT: ${{ secrets.DB_PORT }}
+      - twilio_account_sid=${{ secrets.TWILIO_ACCOUNT_SID }}
+      - twilio_auth_token=${{ secrets.TWILIO_AUTH_TOKEN }}
+      - NUMBER_FROM=${{ secrets.NUMBER_FROM }}
 
-#    env_file:
-#      - ./.env
+    #    env_file:
+    #      - ./.env
     volumes:
       - static_volume:/code/static
 
