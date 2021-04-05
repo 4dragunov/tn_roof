@@ -23,16 +23,16 @@ services:
       - db
     env_file:
       - ./.env
-    environment:
-      #      DB_ENGINE: ${{ secrets.DB_ENGINE }}
-      #      DB_NAME: ${{ secrets.DB_NAME }}
-      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      #      DB_HOST: ${{ secrets.DB_HOST }}
-      #      DB_PORT: ${{ secrets.DB_PORT }}
-      - TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}
-      - TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}
-      - NUMBER_FROM=${{ secrets.NUMBER_FROM }}
+#    environment:
+#      #      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+#      #      DB_NAME: ${{ secrets.DB_NAME }}
+#      #      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+#      #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#      #      DB_HOST: ${{ secrets.DB_HOST }}
+#      #      DB_PORT: ${{ secrets.DB_PORT }}
+#      - TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}
+#      - TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}
+#      - NUMBER_FROM=${{ secrets.NUMBER_FROM }}
 
 
     volumes:
