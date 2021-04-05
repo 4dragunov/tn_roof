@@ -24,8 +24,10 @@ def check_max_value(sensor, value):
 
 def sms_sender(sms_text, number):
     print('Sms send complite!')
-    account_sid = os.getenv('twilio_account_sid')
-    auth_token = os.getenv('twilio_auth_token')
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    # account_sid = os.getenv('twilio_account_sid')
+    # auth_token = os.getenv('twilio_auth_token')
     # account_sid = {sectet.}
     client = Client(account_sid, auth_token)
     message = client.messages.create(
