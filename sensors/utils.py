@@ -26,6 +26,7 @@ def sms_sender(sms_text, number):
     print('Sms send complite!')
     account_sid = os.getenv('twilio_account_sid')
     auth_token = os.getenv('twilio_auth_token')
+    # account_sid = {sectet.}
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         body=sms_text,
