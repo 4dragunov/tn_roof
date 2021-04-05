@@ -6,7 +6,3 @@ DB_HOST=db # название сервиса (контейнера)
 DB_PORT=5432 # порт для подключения к БД
 
 
-twilio_account_sid = 'ACeea534b4d8c8f961661ee20590767a98'
-twilio_auth_token = 'cc47c2bf4e75385d2619fc54f47eeb87'
-
-NUMBER_FROM = '+12406247725'

@@ -21,6 +21,10 @@ services:
       - 8000
     depends_on:
       - db
+    env:
+      twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      NUMBER_FROM: ${{ secrets.NUMBER_FROM }}
     env_file:
       - ./.env
     volumes:
