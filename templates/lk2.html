@@ -113,6 +113,24 @@
                             <li class="breadcrumb-item active">Sensors</li>
                         </ol>
 
+                        <form method="POST">{% csrf_token %}
+                            {{ phone_number_form }}
+
+                        <button type="submit" name="phone_number_form">
+                            Сохранить
+                        </button>
+
+                        </form>
+
+<!--                        <form method="POST">{% csrf_token %}-->
+<!--                            {{ load_form }}-->
+
+<!--                        <button type="submit" name="load_form">-->
+<!--                            Сохранить-->
+<!--                        </button>-->
+
+                        </form>
+
                         <form>
                             <p>
                                 <label for="date">Дата показаний: </label>

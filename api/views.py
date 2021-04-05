@@ -12,6 +12,7 @@ from sensors.models import *
 
 from .weather_utils import get_weather
 
+from sensors.utils import sms_sender, check_max_value
 
 def get_objects_id(model, filters):
     return model.objects.filter(**filters)[0].id
@@ -45,6 +46,7 @@ class DataSend(APIView):
                                temperature=float(temperature),
                                snow=float(snow)) # создаем запись в бд
         SensorValues.objects.create(sensor=sensor, value=value)
+        check_max_value(sensor, value)
         return Response({'message': 'Success!',
                          'last_value': last_value})
 
