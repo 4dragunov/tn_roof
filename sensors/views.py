@@ -78,9 +78,6 @@ def lk(request):
     snow = get_df_for_list(dataframe_weather,'snow','pub_date')
 
 
-
-
-
     return render(
         request,
         'lk.html',
@@ -91,6 +88,31 @@ def lk(request):
         }
     )
 
+
+class ChartsData:
+
+    def __init__(self, model, model_filter):
+        self.model = model
+        self.model_filter = model_filter
+        self.df = None
+
+    def get_dataframes(self):
+        fields_model = [f.name for f in self.model._meta.get_fields()]
+        quaryset = self.model.objects.filter(**self.model_filter).values_list()
+        df = pd.DataFrame(list(quaryset), columns=fields_model)
+        self.df = df
+
+    def get_date_kwargs(self, df_key):
+        self.get_dataframes()
+        context_date = list(
+            reversed([_.strftime("%H:%M:%S") for _ in self.df[df_key]]))
+        return context_date
+
+    def get_data_kwargs(self, df_key):
+        self.get_dataframes()
+        context_charts = list(reversed([_ for _ in self.df[df_key]]))
+        return context_charts
+        
 
 def lk2(request, building_id):
 
@@ -115,6 +137,7 @@ def lk2(request, building_id):
     #     sensor = get_object_or_404(Sensor, pk=sensor_pk)
     #     value = load_form.data['value']
     #     sensor.max_value = int(value)
+
 
     if not request.GET:
         request_date = datetime.now().date()
