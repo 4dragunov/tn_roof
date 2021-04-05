@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from sensors.models import SensorValues, Sensor, Building, Weather
 
 from datetime import date, datetime
 import pandas as pd
 import numpy as np
-from .forms import SensorForm
+from .forms import SensorForm, PhoneForm
 
 
 def index(request):
@@ -17,10 +17,9 @@ def index(request):
         # print(request_sensor_id)
         if form.is_valid():
             # Обработка
-            request_sensor_id = form.data['sens_uid']
-            print(request_sensor_id)
+            request_building = form.data['building']
             # form.save()  # сохранение  модели
-            return redirect('lk2', request_sensor_id)
+            return redirect('lk2', request_building)
     else:
         form = SensorForm()
 
@@ -59,7 +58,8 @@ class ChartsData:
 def lk(request):
     building = 1
 
-    sens_id = [i for i in list(Sensor.objects.filter(building_id=building).values())]
+    sens_id = [i for i in
+               list(Sensor.objects.filter(building_id=building).values())]
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -70,7 +70,6 @@ def lk(request):
         else:
             request_date = (datetime.strptime(
                 request.GET['date'], '%Y-%m-%d')).date()
-
 
     filter_model_weather = {
         "building": building,
@@ -92,8 +91,8 @@ def lk(request):
             SensorValues,
             filter_model_sensorsvalues
         )
-        data.append([i['sens_uid'],charts_sensors_values.get_data_kwargs('value')])
-
+        data.append(
+            [i['sens_uid'], charts_sensors_values.get_data_kwargs('value')])
 
     return render(
         request,
@@ -109,14 +108,30 @@ def lk(request):
     )
 
 
-def lk2(request, pk):
-    if pk:
-        request_sensor_id = pk
-    else:
-        request_sensor_id = 1
-    building = 1
-    charts_sensors_values_1 = []
-    request_sensor_id = [1, 2]
+def lk2(request, building_id):
+
+    building = get_object_or_404(Building, id=building_id)
+    sens_id = [i for i in
+               list(Sensor.objects.filter(building_id=building_id).values())]
+
+    print(sens_id)
+
+    phone_number_form = PhoneForm(request.POST or None, instance=building)
+    if phone_number_form.is_valid():
+        phone_number_form.save(building)
+        sensor_pk = phone_number_form.data['sensor']
+        if sensor_pk:
+            sensor = get_object_or_404(Sensor, pk=sensor_pk)
+            value = phone_number_form.data['value']
+            sensor.max_value = int(value)
+            sensor.save()
+
+    # if load_form.is_valid():
+    #     sensor_pk = load_form.data['sensor']
+    #     sensor = get_object_or_404(Sensor, pk=sensor_pk)
+    #     value = load_form.data['value']
+    #     sensor.max_value = int(value)
+
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -128,61 +143,37 @@ def lk2(request, pk):
             request_date = (datetime.strptime(
                 request.GET['date'], '%Y-%m-%d')).date()
 
-    filter_model_sensorsvalues = {
-        "sensor_id": request_sensor_id,
-        "pub_date__contains": request_date
-    }
     filter_model_weather = {
         "building": building,
         "pub_date__contains": request_date
     }
-
-    charts_sensors_values = ChartsData(
-        SensorValues,
-        filter_model_sensorsvalues
-    )
 
     charts_weather_api = ChartsData(
         Weather,
         filter_model_weather
     )
 
-    chart_labels = []
-    chart_data = []
-    for item in request_sensor_id:
-        if not request.GET:
-            request_date = datetime.now().date()
-
-        if "date" in request.GET:
-            if not request.GET['date']:
-                request_date = datetime.now().date()
-            else:
-                request_date = (datetime.strptime(
-                    request.GET['date'], '%Y-%m-%d')).date()
-
+    data = []
+    for i in sens_id:
         filter_model_sensorsvalues = {
-            "sensor_id": item,
+            "sensor_id": int(i['id']),
             "pub_date__contains": request_date
         }
         charts_sensors_values = ChartsData(
             SensorValues,
             filter_model_sensorsvalues
         )
-
-        chart_labels.append(charts_sensors_values.get_date_kwargs('pub_date'))
-        chart_data.append((charts_sensors_values.get_data_kwargs(
-            'value')))
-    print(chart_labels)
-    print(chart_data)
+        data.append(
+            [i['sens_uid'], charts_sensors_values.get_data_kwargs('value')])
 
     return render(
         request,
         'lk2.html',
         {
-            # 'labels': charts_sensors_values.get_date_kwargs('pub_date'),
-            # 'data': charts_sensors_values.get_data_kwargs('value'),
-            'labels': chart_labels,
-            'data': chart_data,
+            # 'load_form': load_form,
+            'phone_number_form': phone_number_form,
+            'data': data,
+            'labels': charts_sensors_values.get_date_kwargs('pub_date'),
             'labels_temp': charts_weather_api.get_date_kwargs('pub_date'),
             'data_temp': charts_weather_api.get_data_kwargs('temperature'),
             'labels_snow': charts_weather_api.get_date_kwargs('pub_date'),

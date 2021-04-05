@@ -25,6 +25,14 @@ class Building(models.Model):
         verbose_name='Широта'
     )
 
+    phone_number = models.CharField(
+        max_length=12,
+        verbose_name='Номер телефона инженера по эксплуатации',
+        default='+79214462524'
+    )
+
+
+
     def __str__(self):
         return self.title
 
@@ -44,6 +52,11 @@ class Sensor(models.Model):
         Building,
         on_delete=models.CASCADE,
         verbose_name='Объект'
+    )
+
+    max_value = models.PositiveIntegerField(
+        verbose_name='Значение для отправки уведомлений',
+        default=200,
     )
 
     def __str__(self):

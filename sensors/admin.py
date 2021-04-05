@@ -12,7 +12,8 @@ from .models import (
 class BuildingAdmin(admin.ModelAdmin):
     list_display = (
         'title',
-        'adress'
+        'adress',
+        'phone_number',
     )
 
 
