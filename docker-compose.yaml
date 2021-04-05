@@ -21,8 +21,19 @@ services:
       - 8000
     depends_on:
       - db
-    env_file:
-      - ./.env
+    environment:
+      - DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      - DB_NAME: ${{ secrets.DB_NAME }}
+      - POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      - POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      - DB_HOST: ${{ secrets.DB_HOST }}
+      - DB_PORT: ${{ secrets.DB_PORT }}
+      - twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      - twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      - NUMBER_FROM: ${{ secrets.NUMBER_FROM }}
+
+#    env_file:
+#      - ./.env
     volumes:
       - static_volume:/code/static
 
