@@ -1,19 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Панель управления{% endblock %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
 
-
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
-    </head>
+{% block content %}
+{% csrf_token %}
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="index.html">Start Bootstrap</a>
@@ -30,7 +20,12 @@
                         <a class="dropdown-item" href="#">Settings</a>
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                        {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
+                        {% else %}
+
+                        <a class="dropdown-item" href="{% url 'login' %}">Войти</a>
+                        {% endif %}
                     </div>
                 </li>
             </ul>
@@ -99,10 +94,12 @@
                             </a>
                         </div>
                     </div>
+                    {% if user.is_authenticated %}
                     <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        <div class="small">Текущий пользователь:</div>
+                        {{request.user}}
                     </div>
+                    {% endif %}
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -112,16 +109,24 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Sensors</li>
                         </ol>
+                          <form method="POST">{% csrf_token %}
+                            {{ phone_number_form }}
 
+                        <button type="submit" name="phone_number_form">
+                            Сохранить
+                        </button>
+
+                        </form>
                         <form>
                             <p>
                                 <label for="date">Дата показаний: </label>
                                 <input type="date" id="date" name="date"/>
-                            </p>
-                            <p>
                                 <button type="submit">Отправить</button>
                             </p>
+
                         </form>
+
+
 
 
                         <!-- First charts -->
@@ -130,33 +135,33 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area mr-1"></i>
-                                        Давление снега
+                                        Снеговая нагрузка, кг/м2
                                     </div>
                                     <canvas id="snow_sens" width="600" height="400"></canvas>
                                 </div>
                             </div>
-                        
+
 
                         <!-- Second charts -->
-                        
+
                             <div class="col-xl-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area mr-1"></i>
-                                        Показания температуры
+                                        Показания температуры (прогноз погоды)
                                     </div>
                                     <canvas id="temp_API" width="600" height="400"></canvas>
                                 </div>
                             </div>
-                        
+
 
                         <!-- Thrd charts -->
-                        
+
                             <div class="col-xl-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area mr-1"></i>
-                                        Показания снега
+                                        Показания снега (прогноз погоды)
                                     </div>
                                     <canvas id="snow_API" width="600" height="400"></canvas>
                                 </div>
@@ -179,114 +184,115 @@
                 </footer>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+         {% endblock %}
+        {% block scripts %}
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
-<script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+            <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script>
 
 
 
-<script>
-    var data = {{ data|safe }}
-    let datasets = []
+            <script>
+        var data = {{ data|safe }}
+        let datasets = []
 
-    for (let item of data) {
-      datasets.push({
-            label: item[0],
-            borderColor: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
-            fill: false,
-            data: item[1]
-      });
-    }
-
-
-    var ctx = document.getElementById('snow_sens').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: { datasets: datasets },
-      options: {
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'minute'
-            }
-          }]
+        for (let item of data) {
+          datasets.push({
+                label: item[0],
+                borderColor: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
+                fill: false,
+                data: item[1]
+          });
         }
-      }
-    });
 
-</script>
 
-<script>
-
-    var temperature_data = {{ temperature|safe }}
-
-    var temperature = {
-      label: 'Температура',
-      borderColor: 'red',
-      data: temperature_data
-    };
-
-    var ctx = document.getElementById('temp_API').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: { datasets: [temperature] },
-      options: {
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'minute'
+        var ctx = document.getElementById('snow_sens').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: { datasets: datasets },
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                  unit: 'minute'
+                }
+              }]
             }
-          }]
-        }
-      }
-    });
+          }
+        });
 
-</script>
+    </script>
 
-<script>
+            <script>
 
-    var snow_data = {{ snow|safe }}
+        var temperature_data = {{ temperature|safe }}
 
-    var snow = {
-      label: 'Показания осадков',
-      borderColor: 'blue',
-      data: snow_data
-    };
+        var temperature = {
+          label: 'Температура',
+          borderColor: 'red',
+          data: temperature_data
+        };
 
-    var ctx = document.getElementById('snow_API').getContext('2d');
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: { datasets: [snow] },
-      options: {
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'minute'
+        var ctx = document.getElementById('temp_API').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: { datasets: [temperature] },
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                  unit: 'minute'
+                }
+              }]
             }
-          }]
-        }
-      }
-    });
+          }
+        });
 
-</script>
+    </script>
+
+            <script>
+
+        var snow_data = {{ snow|safe }}
+
+        var snow = {
+          label: 'Показания осадков',
+          borderColor: 'blue',
+          data: snow_data
+        };
+
+        var ctx = document.getElementById('snow_API').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: { datasets: [snow] },
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                  unit: 'minute'
+                }
+              }]
+            }
+          }
+        });
+
+    </script>
 
 
-        
-<!-- {% block js %}
-        <script src="{% static 'src/assets/demo/datatables-demo.js' %}"></script>
-        <script src="{% static 'src/assets/demo/chart-bar-demo.js' %}"></script>
-        <script src="{% static 'src/assets/demo/chart-area-demo.js' %}"></script>
-        <script src="{% static 'src/js/scripts.js' %}"></script>
-{% endblock %} -->
+
+            <script src="{% static 'src/assets/demo/datatables-demo.js' %}"></script>
+            <script src="{% static 'src/assets/demo/chart-bar-demo.js' %}"></script>
+            <script src="{% static 'src/assets/demo/chart-area-demo.js' %}"></script>
+            <script src="{% static 'src/js/scripts.js' %}"></script>
+        {% endblock %}
 
 
     </body>

@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Вход{% endblock %}
+{% load static %}
+{% load user_filters%}
+{% block content %}
+
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3
+                                            class="text-center font-weight-light my-4">Ой...</h3></div>
+                                    <div class="card-body">
+                                       Мы настраиваем Ваш личный кабинет!
+                                        Попробуйте зайти позже.
+                                        <br>
+                                        <br>
+                                        <a href="{%url 'login'%}">Зайти под
+                                        другим аккаунтом</a>
+
+                                    </div>
+<!--                                    <div class="card-footer text-center">-->
+<!--                                        <div class="small"><a-->
+<!--                                                href="register.html">Нет-->
+<!--                                            аккаунта? Ну что поделать!</a></div>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+{% endblock %}

@@ -14,6 +14,7 @@ class BuildingAdmin(admin.ModelAdmin):
         'title',
         'adress',
         'phone_number',
+        'owner',
     )
 
 

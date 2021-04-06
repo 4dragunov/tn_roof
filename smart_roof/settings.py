@@ -77,7 +77,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'smart_roof.wsgi.application'
 
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = 'dashboard'
 
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 

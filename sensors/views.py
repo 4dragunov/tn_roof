@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from sensors.models import SensorValues, Sensor, Building, Weather
 
@@ -7,9 +8,9 @@ import numpy as np
 from .forms import SensorForm, PhoneForm
 
 
+
 def index(request):
     '''Вьюха отображения главной страницы'''
-    # получаем список тегов из GET запроса
     # buildings = Building.objects.all()
     if request.method == 'POST':
         form = SensorForm(request.POST)
@@ -184,5 +185,67 @@ def lk2(request, building_id):
             'data_temp': charts_weather_api.get_data_kwargs('temperature'),
             'labels_snow': charts_weather_api.get_date_kwargs('pub_date'),
             'data_snow': charts_weather_api.get_data_kwargs('snow')
+        }
+    )
+
+
+def dashboard(request):
+    try:
+        building = get_object_or_404(Building, owner=request.user)
+    except:
+    # if not building:
+        return render(
+            request,
+            'misc/no_building.html',)
+
+    sens_id = [i for i in
+               list(Sensor.objects.filter(building_id=building).values())]
+
+    phone_number_form = PhoneForm(request.POST or None, instance=building)
+    if phone_number_form.is_valid():
+        phone_number_form.save(building)
+        sensor_pk = phone_number_form.data['sensor']
+        if sensor_pk:
+            sensor = get_object_or_404(Sensor, pk=sensor_pk)
+            value = phone_number_form.data['value']
+            sensor.max_value = int(value)
+            sensor.save()
+
+
+    if not request.GET:
+        request_date = datetime.now().date()
+    if "date" in request.GET:
+        if not request.GET['date']:
+            request_date = datetime.now().date()
+        else:
+            request_date = (datetime.strptime(
+                request.GET['date'], '%Y-%m-%d')).date()
+
+    data = []
+    for i in sens_id:
+        filter_model_sensorsvalues = {
+            "sensor_id": int(i['id']),
+            "pub_date__contains": request_date
+        }
+        dataframe = get_dataframes(SensorValues, filter_model_sensorsvalues)
+        x = get_df_for_list(dataframe, 'value', 'pub_date')
+        data.append([i['sens_uid'], x])
+
+    filter_model_weather = {
+        "building": building,
+        "pub_date__contains": request_date
+    }
+    dataframe_weather = get_dataframes(Weather, filter_model_weather)
+    temperature = get_df_for_list(dataframe_weather, 'temperature', 'pub_date')
+    snow = get_df_for_list(dataframe_weather, 'snow', 'pub_date')
+
+    return render(
+        request,
+        'dashboard.html',
+        {
+            'phone_number_form': phone_number_form,
+            'data': data,
+            'temperature': temperature,
+            'snow': snow
         }
     )

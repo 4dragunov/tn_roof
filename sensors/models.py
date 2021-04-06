@@ -1,8 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
+User = get_user_model()
 
 
 class Building(models.Model):
+    owner = models.ForeignKey(User,
+                              default=1,
+                              on_delete=models.CASCADE,
+                              related_name='buildings',
+                              verbose_name='Заказчик')
+
     title = models.CharField(
         unique=True,
         max_length=100,
@@ -30,8 +38,6 @@ class Building(models.Model):
         verbose_name='Номер телефона инженера по эксплуатации',
         default='+79214462524'
     )
-
-
 
     def __str__(self):
         return self.title
@@ -116,7 +122,6 @@ class Weather(models.Model):
         auto_now_add=True,
         verbose_name='Дата показания',
     )
-
 
     class Meta:
         verbose_name = "Погодные данные"
