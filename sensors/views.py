@@ -5,7 +5,7 @@ from sensors.models import SensorValues, Sensor, Building, Weather
 from datetime import date, datetime
 import pandas as pd
 import numpy as np
-from .forms import SensorForm, PhoneForm
+from .forms import SensorForm, SensorSettingsForm, BuildingForm
 
 
 def index(request):
@@ -195,25 +195,7 @@ def dashboard(request):
     sens_id = [i for i in
                list(Sensor.objects.filter(building_id=building).values())]
 
-    phone_number_form = PhoneForm(request.POST or None, instance=building)
-    if phone_number_form.is_valid():
-        phone_number_form.save(building)
-        sensor_pk = phone_number_form.data['sensor']
-        print(sensor_pk)
-        if sensor_pk:
-            sensor = get_object_or_404(Sensor, pk=sensor_pk)
-            value = phone_number_form.data['value']
-            if value:
-                sensor.max_value = int(value)
-                sensor.save()
-            response_comand = phone_number_form.data['response_comand']
-            print(response_comand)
-            if response_comand:
-                print(response_comand)
-                sensor.response_comand = response_comand
-                sensor.save()
 
-    # response_comand_form = ResponseComandForm(request.POST)
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -246,10 +228,74 @@ def dashboard(request):
         request,
         'dashboard.html',
         {
-            # 'response_comand_form': response_comand_form,
-            'phone_number_form': phone_number_form,
             'data': data,
             'temperature': temperature,
             'snow': snow
+        }
+    )
+
+
+def snow_settings(request):
+    try:
+        building = get_object_or_404(Building, owner=request.user)
+    except:
+        return render(
+            request,
+            'misc/no_building.html', )
+
+    sens_id = [i for i in
+               list(Sensor.objects.filter(building_id=building).values())]
+
+    sensor_settings_form = SensorSettingsForm(request.POST or None,
+                                            instance=building)
+    if sensor_settings_form.is_valid():
+        sensor_settings_form.save(building)
+        sensor_pk = sensor_settings_form.data['sensor']
+        print(sensor_pk)
+        if sensor_pk:
+            sensor = get_object_or_404(Sensor, pk=sensor_pk)
+            value = sensor_settings_form.data['value']
+            if value:
+                sensor.max_value = int(value)
+                sensor.save()
+            response_comand = sensor_settings_form.data['response_comand']
+            print(response_comand)
+            if response_comand:
+                print(response_comand)
+                sensor.response_comand = response_comand
+                sensor.save()
+    return render(
+        request,
+        'snow_settings.html',
+        {
+            # 'response_comand_form': response_comand_form,
+            'sensor_settings_form': sensor_settings_form,
+            # 'data': data,
+            # 'temperature': temperature,
+            # 'snow': snow
+        }
+    )
+
+
+def building_settings(request):
+    try:
+        building = get_object_or_404(Building, owner=request.user)
+    except:
+        return render(
+            request,
+            'misc/no_building.html', )
+
+    building_form = BuildingForm(request.POST or None, instance=building)
+    if building_form.is_valid():
+        building_form.save()
+    return render(
+        request,
+        'building_settings.html',
+        {
+            # 'response_comand_form': response_comand_form,
+            'building_form': building_form,
+            # 'data': data,
+            # 'temperature': temperature,
+            # 'snow': snow
         }
     )

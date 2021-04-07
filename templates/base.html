@@ -15,13 +15,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
-
-
+    <body class="sb-nav-fixed">
+{% include 'nav.html' %}
                 {% block content %}
                 <!-- Содержимое страницы -->
                 {% endblock content %}
 
-
+ </body>
 {% block scripts %}
 {% endblock %}
 </html>

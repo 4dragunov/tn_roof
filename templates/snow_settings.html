@@ -11,89 +11,20 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Мониторинг</h1>
+                        <h1 class="mt-4">Настройки датчика снеговой
+                            нагрузки</h1>
 <!--                        <ol class="breadcrumb mb-4">-->
 <!--                            <li class="breadcrumb-item active">Sensors</li>-->
 <!--                        </ol>-->
+                        <form method="POST">{% csrf_token %}
+                            {{ sensor_settings_form|crispy }}
 
-                        <form >
-                            <p>
-                                <label for="date">Архив показаний: </label>
-                                <input type="date" id="date" name="date"/>
-                                <button type="submit">Загрузить</button>
-                            </p>
+                        <button type="submit" name="phone_number_form">
+                            Сохранить
+                        </button>
 
                         </form>
 
-<!--                        <form method="post">-->
-<!--                            {% csrf_token %}-->
-<!--                            <input type="hidden" name="next" value="{{ next }}">-->
-<!--                            {{ response_comand_form|crispy }}-->
-<!--                            <button type="submit">Сохранить</button>-->
-<!--                        </form>-->
-
-
-
-
-                        <!-- First charts -->
-                        <div class="row ">
-                            <div class="col-xl-8">
-                                <div class="card mb-5">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area mr-1"></i>
-                                        Снеговая нагрузка, кг/м2
-                                    </div>
-                                    <canvas id="snow_sens"></canvas>
-                                </div>
-                            </div>
-
-
-                        <!-- Second charts -->
-
-                            <div class="col-xl-4">
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="container">
-                                            <div class="card mb-1">
-                                                <div class="card-header">
-                                                    <i class="fas fa-chart-area mr-1"></i>
-                                                    Показания температуры (прогноз погоды)
-                                                </div>
-                                                <canvas id="temp_API"></canvas>
-                                            </div>
-
-                                            <div class="card mb-1">
-                                                <div class="card-header">
-                                                <i class="fas fa-chart-area mr-1"></i>
-                                                Показания снега (прогноз погоды)
-                                                </div>
-                                                <canvas id="snow_API"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-
-                    </div>
-                </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
          {% endblock %}
         {% block scripts %}
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
