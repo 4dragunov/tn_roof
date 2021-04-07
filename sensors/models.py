@@ -48,6 +48,7 @@ class Building(models.Model):
 
 
 class Sensor(models.Model):
+
     sens_uid = models.CharField(
         max_length=100,
         verbose_name='Уникальный номер датчика',
@@ -65,8 +66,16 @@ class Sensor(models.Model):
         default=200,
     )
 
+    response_comand = models.CharField(
+        default='ok',
+        max_length=100,
+        verbose_name='Команда для ответа с сервера',
+    )
+
     def __str__(self):
         return self.sens_uid
+
+
 
     class Meta:
         verbose_name = "Датчик"

@@ -8,7 +8,6 @@ import numpy as np
 from .forms import SensorForm, PhoneForm
 
 
-
 def index(request):
     '''Вьюха отображения главной страницы'''
     # buildings = Building.objects.all()
@@ -69,23 +68,21 @@ def lk(request):
         x = get_df_for_list(dataframe, 'value', 'pub_date')
         data.append([i['sens_uid'], x])
 
-
     filter_model_weather = {
         "building": building,
         "pub_date__contains": request_date
     }
     dataframe_weather = get_dataframes(Weather, filter_model_weather)
-    temperature = get_df_for_list(dataframe_weather,'temperature','pub_date')
-    snow = get_df_for_list(dataframe_weather,'snow','pub_date')
-
+    temperature = get_df_for_list(dataframe_weather, 'temperature', 'pub_date')
+    snow = get_df_for_list(dataframe_weather, 'snow', 'pub_date')
 
     return render(
         request,
         'lk.html',
         {
             'data': data,
-            'temperature':temperature,
-            'snow':snow
+            'temperature': temperature,
+            'snow': snow
         }
     )
 
@@ -113,10 +110,9 @@ class ChartsData:
         self.get_dataframes()
         context_charts = list(reversed([_ for _ in self.df[df_key]]))
         return context_charts
-        
+
 
 def lk2(request, building_id):
-
     building = get_object_or_404(Building, id=building_id)
     sens_id = [i for i in
                list(Sensor.objects.filter(building_id=building_id).values())]
@@ -138,7 +134,6 @@ def lk2(request, building_id):
     #     sensor = get_object_or_404(Sensor, pk=sensor_pk)
     #     value = load_form.data['value']
     #     sensor.max_value = int(value)
-
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -193,10 +188,9 @@ def dashboard(request):
     try:
         building = get_object_or_404(Building, owner=request.user)
     except:
-    # if not building:
         return render(
             request,
-            'misc/no_building.html',)
+            'misc/no_building.html', )
 
     sens_id = [i for i in
                list(Sensor.objects.filter(building_id=building).values())]
@@ -205,12 +199,21 @@ def dashboard(request):
     if phone_number_form.is_valid():
         phone_number_form.save(building)
         sensor_pk = phone_number_form.data['sensor']
+        print(sensor_pk)
         if sensor_pk:
             sensor = get_object_or_404(Sensor, pk=sensor_pk)
             value = phone_number_form.data['value']
-            sensor.max_value = int(value)
-            sensor.save()
+            if value:
+                sensor.max_value = int(value)
+                sensor.save()
+            response_comand = phone_number_form.data['response_comand']
+            print(response_comand)
+            if response_comand:
+                print(response_comand)
+                sensor.response_comand = response_comand
+                sensor.save()
 
+    # response_comand_form = ResponseComandForm(request.POST)
 
     if not request.GET:
         request_date = datetime.now().date()
@@ -243,6 +246,7 @@ def dashboard(request):
         request,
         'dashboard.html',
         {
+            # 'response_comand_form': response_comand_form,
             'phone_number_form': phone_number_form,
             'data': data,
             'temperature': temperature,

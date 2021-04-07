@@ -3,10 +3,11 @@
 {% load static %}
 
 {% block content %}
+{% load crispy_forms_tags %}
 {% csrf_token %}
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="index.html">Smart Roof</a>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                     </div>
@@ -109,7 +110,7 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Sensors</li>
                         </ol>
-                          <form method="POST">{% csrf_token %}
+                        <form method="POST">{% csrf_token %}
                             {{ phone_number_form }}
 
                         <button type="submit" name="phone_number_form">
@@ -117,7 +118,7 @@
                         </button>
 
                         </form>
-                        <form>
+                        <form >
                             <p>
                                 <label for="date">Дата показаний: </label>
                                 <input type="date" id="date" name="date"/>
@@ -125,6 +126,13 @@
                             </p>
 
                         </form>
+
+<!--                        <form method="post">-->
+<!--                            {% csrf_token %}-->
+<!--                            <input type="hidden" name="next" value="{{ next }}">-->
+<!--                            {{ response_comand_form|crispy }}-->
+<!--                            <button type="submit">Сохранить</button>-->
+<!--                        </form>-->
 
 
 

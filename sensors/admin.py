@@ -23,7 +23,9 @@ class SensorAdmin(admin.ModelAdmin):
     list_display = (
         'sens_uid',
         'building',
-        'values_count'
+        'values_count',
+        'response_comand',
+        'max_value'
     )
 
     def values_count(self, obj):
