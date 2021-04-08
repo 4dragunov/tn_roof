@@ -47,8 +47,11 @@ class DataSend(APIView):
                                snow=float(snow)) # создаем запись в бд
         SensorValues.objects.create(sensor=sensor, value=value)
         check_max_value(sensor, value)
+        response_comand = sensor.get_response_value()
+        sensor.response_comand = 'ok'
+        sensor.save()
         return Response({'message': 'Success!',
-                         'last_value': last_value})
+                         'response_comand': response_comand})
 
 
 class DataGet(APIView):

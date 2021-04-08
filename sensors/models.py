@@ -75,7 +75,8 @@ class Sensor(models.Model):
     def __str__(self):
         return self.sens_uid
 
-
+    def get_response_value(self):
+        return self.response_comand
 
     class Meta:
         verbose_name = "Датчик"

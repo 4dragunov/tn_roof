@@ -254,7 +254,7 @@ def snow_settings(request):
         print(sensor_pk)
         if sensor_pk:
             sensor = get_object_or_404(Sensor, pk=sensor_pk)
-            value = sensor_settings_form.data['value']
+            value = sensor_settings_form.data['max_value']
             if value:
                 sensor.max_value = int(value)
                 sensor.save()
