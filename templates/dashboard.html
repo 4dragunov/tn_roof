@@ -5,13 +5,14 @@
 {% block content %}
 {% load crispy_forms_tags %}
 {% csrf_token %}
+{% include 'nav.html' %}
 
 
 
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Мониторинг</h1>
+                        <h1 class="mt-4 mb-4">Мониторинг</h1>
 <!--                        <ol class="breadcrumb mb-4">-->
 <!--                            <li class="breadcrumb-item active">Sensors</li>-->
 <!--                        </ol>-->
