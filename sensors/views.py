@@ -223,6 +223,7 @@ def dashboard(request):
     dataframe_weather = get_dataframes(Weather, filter_model_weather)
     temperature = get_df_for_list(dataframe_weather, 'temperature', 'pub_date')
     snow = get_df_for_list(dataframe_weather, 'snow', 'pub_date')
+    print(temperature)
 
     return render(
         request,
@@ -268,11 +269,8 @@ def snow_settings(request):
         request,
         'snow_settings.html',
         {
-            # 'response_comand_form': response_comand_form,
             'sensor_settings_form': sensor_settings_form,
-            # 'data': data,
-            # 'temperature': temperature,
-            # 'snow': snow
+
         }
     )
 

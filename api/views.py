@@ -21,35 +21,32 @@ def get_objects_id(model, filters):
 class DataSend(APIView):
 
     def post(self, request):
+        sensor_type = request.data['sensor_type'] # получаем тип датчика
         sensor_uid = request.data['sensor_uid']  # получаем sensor_uid из json
         value = float(request.data['value'])  # получаем value из json
-        zero_data = float(request.data['zero_data'])  # нуль для датчика
-        is_debug = bool(int(request.data['is_debug']))
-        sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
+        if sensor_type == 'snow':
+            sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
+            SensorValues.objects.create(sensor=sensor, value=value)
+            check_max_value(sensor, value)
+            response_comand = sensor.get_response_value()
+            sensor.response_comand = 'ok'
+            sensor.save()
+        elif sensor_type == 'temperature':
+            sensor = get_object_or_404(TemperatureSensor, sens_uid=sensor_uid)
+            TemperatureSensorValues.objects.create(sensor=sensor, value=value)
+            response_comand = 'ok'
+
+
         building = sensor.building
 
-        if not is_debug:  # если боевой режим
-            if value < zero_data:  # если значение около 0 (100г, 200...)
-                # берем последнее значение из базы
-                last_value_in_db = SensorValues.objects.filter(
-                    sensor=sensor).latest('pub_date').get_value()
-                last_value_in_db = float(last_value_in_db)
-                # увеличиваем запись на последнее значение
-                value = value + last_value_in_db
-                # передаем последнее значение на весы
-                last_value = value
 
-        else:  # если дебаг (не берем последние значения из базы)
-            last_value = -1
         temperature, snow = get_weather(building) #получаем данные прогноза
         Weather.objects.create(building=building,
                                temperature=float(temperature),
                                snow=float(snow)) # создаем запись в бд
-        SensorValues.objects.create(sensor=sensor, value=value)
-        check_max_value(sensor, value)
-        response_comand = sensor.get_response_value()
-        sensor.response_comand = 'ok'
-        sensor.save()
+
+
+
         return Response({'message': 'Success!',
                          'response_comand': response_comand})
 

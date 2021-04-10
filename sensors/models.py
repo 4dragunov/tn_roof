@@ -47,11 +47,12 @@ class Building(models.Model):
         verbose_name_plural = "Объекты"
 
 
+
 class Sensor(models.Model):
 
     sens_uid = models.CharField(
         max_length=100,
-        verbose_name='Уникальный номер датчика',
+        verbose_name='Уникальный номер датчика снега',
         unique=True,
     )
 
@@ -79,19 +80,42 @@ class Sensor(models.Model):
         return self.response_comand
 
     class Meta:
-        verbose_name = "Датчик"
-        verbose_name_plural = "Датчики"
+        verbose_name = "Датчик снега"
+        verbose_name_plural = "Датчики снега"
+
+
+class TemperatureSensor(models.Model):
+    sens_uid = models.CharField(
+        max_length=100,
+        verbose_name='Уникальный номер датчика температуры',
+        unique=True,
+    )
+
+    building = models.ForeignKey(
+        Building,
+        on_delete=models.CASCADE,
+        verbose_name='Объект'
+    )
+
+
+    def __str__(self):
+        return self.sens_uid
+
+
+    class Meta:
+        verbose_name = "Датчик температуры"
+        verbose_name_plural = "Датчики температуры"
 
 
 class SensorValues(models.Model):
     sensor = models.ForeignKey(
         Sensor,
         on_delete=models.CASCADE,
-        verbose_name='Датчик'
+        verbose_name='Датчик снега'
     )
 
     value = models.FloatField(
-        verbose_name='Показание',
+        verbose_name='Показание датчика снега',
     )
 
     pub_date = models.DateTimeField(
@@ -100,8 +124,35 @@ class SensorValues(models.Model):
     )
 
     class Meta:
-        verbose_name = "Показания датчиков"
-        verbose_name_plural = "Показания датчиков"
+        verbose_name = "Показания датчиков снега"
+        verbose_name_plural = "Показания датчиков снега"
+        ordering = ("-pub_date",)
+
+    def __str__(self):
+        return f'{self.value}'
+
+    def get_value(self):
+        return self.value
+
+class TemperatureSensorValues(models.Model):
+    sensor = models.ForeignKey(
+        TemperatureSensor,
+        on_delete=models.CASCADE,
+        verbose_name='Датчик температуры'
+    )
+
+    value = models.FloatField(
+        verbose_name='Показание датчика температуры',
+    )
+
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата показания',
+    )
+
+    class Meta:
+        verbose_name = "Показания датчика температуры"
+        verbose_name_plural = "Показания датчиков температуры"
         ordering = ("-pub_date",)
 
     def __str__(self):
