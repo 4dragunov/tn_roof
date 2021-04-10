@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
-from sensors.models import SensorValues, Sensor, Building, Weather
+from sensors.models import SensorValues, Sensor, Building, Weather, \
+    TemperatureSensorValues, TemperatureSensor
 
 from datetime import date, datetime
 import pandas as pd
@@ -195,6 +196,8 @@ def dashboard(request):
     sens_id = [i for i in
                list(Sensor.objects.filter(building_id=building).values())]
 
+    sens_id_temperature = [i for i in
+               list(TemperatureSensor.objects.filter(building_id=building).values())]
 
 
     if not request.GET:
@@ -216,6 +219,18 @@ def dashboard(request):
         x = get_df_for_list(dataframe, 'value', 'pub_date')
         data.append([i['sens_uid'], x])
 
+    temperature_data = []
+    for i in sens_id_temperature:
+        filter_model_sensorsvalues = {
+            "sensor_id": int(i['id']),
+            "pub_date__contains": request_date
+        }
+        dataframe = get_dataframes(TemperatureSensorValues, filter_model_sensorsvalues)
+        x = get_df_for_list(dataframe, 'value', 'pub_date')
+        temperature_data.append([i['sens_uid'], x])
+
+
+
     filter_model_weather = {
         "building": building,
         "pub_date__contains": request_date
@@ -223,14 +238,18 @@ def dashboard(request):
     dataframe_weather = get_dataframes(Weather, filter_model_weather)
     temperature = get_df_for_list(dataframe_weather, 'temperature', 'pub_date')
     snow = get_df_for_list(dataframe_weather, 'snow', 'pub_date')
-    print(temperature)
 
+    temperature_data.append(['API', temperature])
+    print('temperature_data')
+    print(temperature_data)
+    print('data')
+    print(data)
     return render(
         request,
         'dashboard.html',
         {
             'data': data,
-            'temperature': temperature,
+            'temperature': temperature_data,
             'snow': snow
         }
     )

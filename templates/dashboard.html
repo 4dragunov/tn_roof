@@ -109,10 +109,10 @@
 
 
 
-            <script>
+<script>
         var data = {{ data|safe }}
         let datasets = []
-
+        console.log(data)
         for (let item of data) {
           datasets.push({
                 label: item[0],
@@ -121,6 +121,7 @@
                 data: item[1]
           });
         }
+        console.log(datasets)
 
 
         var ctx = document.getElementById('snow_sens').getContext('2d');
@@ -139,22 +140,27 @@
           }
         });
 
-    </script>
+</script>
 
-            <script>
 
+<script>
         var temperature_data = {{ temperature|safe }}
-
-        var temperature = {
-          label: 'Температура',
-          borderColor: 'red',
-          data: temperature_data
-        };
+        let temperature_datasets = []
+        console.log(temperature_data)
+        for (let temp_item of temperature_data) {
+          temperature_datasets.push({
+                label: temp_item[0],
+                borderColor: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
+                fill: false,
+                data: temp_item[1]
+          });
+        }
+        console.log(temperature_datasets)
 
         var ctx = document.getElementById('temp_API').getContext('2d');
         var chart = new Chart(ctx, {
           type: 'line',
-          data: { datasets: [temperature] },
+          data: { datasets: temperature_datasets },
           options: {
             scales: {
               xAxes: [{
@@ -166,6 +172,7 @@
             }
           }
         });
+
 
     </script>
 
@@ -197,6 +204,34 @@
 
     </script>
 
+
+<!--<script>-->
+
+<!--        var temperature_data = {{ temperature|safe }}-->
+
+<!--        var temperature = {-->
+<!--          label: 'Температура',-->
+<!--          borderColor: 'red',-->
+<!--          data: temperature_data-->
+<!--        };-->
+
+<!--        var ctx = document.getElementById('temp_API').getContext('2d');-->
+<!--        var chart = new Chart(ctx, {-->
+<!--          type: 'line',-->
+<!--          data: { datasets: [temperature] },-->
+<!--          options: {-->
+<!--            scales: {-->
+<!--              xAxes: [{-->
+<!--                type: 'time',-->
+<!--                time: {-->
+<!--                  unit: 'minute'-->
+<!--                }-->
+<!--              }]-->
+<!--            }-->
+<!--          }-->
+<!--        });-->
+
+<!--    </script>-->
 
 
             <script src="{% static 'src/assets/demo/datatables-demo.js' %}"></script>
