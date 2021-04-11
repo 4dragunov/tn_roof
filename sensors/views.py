@@ -279,10 +279,14 @@ def snow_settings(request):
                 sensor.max_value = int(value)
                 sensor.save()
             response_comand = sensor_settings_form.data['response_comand']
-            print(response_comand)
             if response_comand:
                 print(response_comand)
                 sensor.response_comand = response_comand
+                sensor.save()
+            response_update_time = sensor_settings_form.data['response_update_time']
+            if response_update_time:
+                print(response_update_time)
+                sensor.response_update_time = response_update_time
                 sensor.save()
     return render(
         request,

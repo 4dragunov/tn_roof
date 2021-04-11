@@ -27,6 +27,7 @@ class SensorAdmin(admin.ModelAdmin):
         'building',
         'values_count',
         'response_comand',
+        'response_update_time',
         'max_value'
     )
 

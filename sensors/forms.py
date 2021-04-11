@@ -16,20 +16,20 @@ class SensorSettingsForm(forms.ModelForm):
 
     )
 
+
+
+    class Meta:
+        model = Sensor
+        fields = ('max_value','response_update_time')
+
     sensor = forms.ModelChoiceField(queryset=Sensor.objects.all(),
                                     required=False,
                                     label='Уникальный номер датчика')
-
-
 
     response_comand = forms.ChoiceField(
         choices=RESPONCE_COMANDS,
         required=False,
         label='Cлужебные команды')
-
-    class Meta:
-        model = Sensor
-        fields = ('max_value',)
 
 class BuildingForm(forms.ModelForm):
     class Meta:

@@ -18,6 +18,7 @@ def get_objects_id(model, filters):
     return model.objects.filter(**filters)[0].id
 
 
+
 class DataSend(APIView):
 
     def post(self, request):
@@ -30,11 +31,13 @@ class DataSend(APIView):
             check_max_value(sensor, value)
             response_comand = sensor.get_response_value()
             sensor.response_comand = 'ok'
+            response_update_time = sensor.get_response_update_time()
             sensor.save()
         elif sensor_type == 'temperature':
             sensor = get_object_or_404(TemperatureSensor, sens_uid=sensor_uid)
             TemperatureSensorValues.objects.create(sensor=sensor, value=value)
             response_comand = 'ok'
+            response_update_time = 'NULL'
 
 
         building = sensor.building
@@ -48,7 +51,8 @@ class DataSend(APIView):
 
 
         return Response({'message': 'Success!',
-                         'response_comand': response_comand})
+                         'response_comand': response_comand,
+                         'response_update_time': response_update_time})
 
 
 class DataGet(APIView):

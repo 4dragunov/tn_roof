@@ -63,7 +63,7 @@ class Sensor(models.Model):
     )
 
     max_value = models.PositiveIntegerField(
-        verbose_name='Значение для отправки уведомлений',
+        verbose_name='Значение для отправки уведомлений, кг/м2',
         default=200,
     )
 
@@ -73,15 +73,24 @@ class Sensor(models.Model):
         verbose_name='Команда для ответа с сервера',
     )
 
+    response_update_time = models.PositiveIntegerField(
+        default='60',
+        verbose_name='Период обновления показателей, сек',
+    )
+
     def __str__(self):
         return self.sens_uid
 
     def get_response_value(self):
         return self.response_comand
 
+    def get_response_update_time(self):
+        return self.response_update_time
+
     class Meta:
         verbose_name = "Датчик снега"
         verbose_name_plural = "Датчики снега"
+
 
 
 class TemperatureSensor(models.Model):
