@@ -182,16 +182,16 @@
 
         var snow = {
           label: 'Показания осадков',
-          // borderColor: 'blue',
-          backgroundColor:'rgba(255, 99, 132, 0.2)',
+          borderColor: 'blue',
+          // backgroundColor:'rgba(255, 99, 132, 0.2)',
           // borderWidth: 1,
           data: snow_data
         };
 
         var ctx = document.getElementById('snow_API').getContext('2d');
         var chart = new Chart(ctx, {
-          type: 'bar',
-          // type: 'line',
+          // type: 'bar',
+          type: 'line',
           data: { datasets: [snow] },
           options: {
             scales: {
