@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from sensors.models import SensorValues, Sensor, Building, Weather, \
     TemperatureSensorValues, TemperatureSensor
@@ -184,7 +185,7 @@ def lk2(request, building_id):
         }
     )
 
-
+@login_required
 def dashboard(request):
     try:
         building = get_object_or_404(Building, owner=request.user)
@@ -254,7 +255,7 @@ def dashboard(request):
         }
     )
 
-
+@login_required
 def snow_settings(request):
     try:
         building = get_object_or_404(Building, owner=request.user)
@@ -297,7 +298,7 @@ def snow_settings(request):
         }
     )
 
-
+@login_required
 def building_settings(request):
     try:
         building = get_object_or_404(Building, owner=request.user)
