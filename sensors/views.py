@@ -249,6 +249,7 @@ def dashboard(request):
         request,
         'dashboard.html',
         {
+            'building':building,
             'data': data,
             'temperature': temperature_data,
             'snow': snow

@@ -13,9 +13,62 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
-<!--                        <ol class="breadcrumb mb-4">-->
-<!--                            <li class="breadcrumb-item active">Sensors</li>-->
-<!--                        </ol>-->
+                        <ol class="breadcrumb mb-4">
+
+
+                        <div class="row">
+                            <div class="col-xl-12 mb-3">
+                                <p style="font-weight: bold">
+                                    Данные
+                                объекта
+                                </p>
+                                <p>
+                                  Наименование объекта - "{{building}}"
+                                </p>
+                                <p>
+                                  Адрес объекта -  {{building.adress}}<br>
+                                    Координаты объекта
+                                    {{building.coordinates_lat}}, {{building.coordinates_lon}}
+                                </p>
+                                <p>
+                                    Номер телефона инженера по эксплуатации
+                                    (для отправки смс-уведомлений)
+                                    {{building.phone_number}}
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                            </ol>
+                             <ol class="breadcrumb mb-4">
+                                 <div class="col-xl-12 mb-3">
+<!--                                 <p>-->
+<!--                                 Количетсво установленных датчиков - -->
+<!--                                 {{building.sensor.all.count}} шт-->
+<!--                                     </p>-->
+<!--                                 <p>-->
+                                     <i style="font-weight: bold">Датчики
+                                         снега: </i>
+                                     <br>
+                                 {%for sensor in building.sensor.all %}
+                                     {{sensor}}, количество показаний -
+                                 {{sensor.sensorvalues.all.count}} <br>
+                                 {% endfor %}
+
+                                     <i style="font-weight: bold">Датчики
+                                         Температуры: </i><br>
+                                     {%for sensor in building.temperaturesensor.all %}
+                                     {{sensor}}, количество показаний -
+                                 {{sensor.temperaturesensorvalues.all.count}} <br>
+                                 {% endfor %}
+
+                                     <br>
+                                 </p>
+                                 </div>
+                             </ol>
+
+
 
                         <form >
                             <p>

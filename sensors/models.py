@@ -59,7 +59,8 @@ class Sensor(models.Model):
     building = models.ForeignKey(
         Building,
         on_delete=models.CASCADE,
-        verbose_name='Объект'
+        verbose_name='Объект',
+        related_name='sensor'
     )
 
     max_value = models.PositiveIntegerField(
@@ -103,7 +104,8 @@ class TemperatureSensor(models.Model):
     building = models.ForeignKey(
         Building,
         on_delete=models.CASCADE,
-        verbose_name='Объект'
+        verbose_name='Объект',
+        related_name='temperaturesensor'
     )
 
 
@@ -120,7 +122,8 @@ class SensorValues(models.Model):
     sensor = models.ForeignKey(
         Sensor,
         on_delete=models.CASCADE,
-        verbose_name='Датчик снега'
+        verbose_name='Датчик снега',
+        related_name = 'sensorvalues'
     )
 
     value = models.FloatField(
@@ -133,6 +136,7 @@ class SensorValues(models.Model):
     )
 
     class Meta:
+
         verbose_name = "Показания датчиков снега"
         verbose_name_plural = "Показания датчиков снега"
         ordering = ("-pub_date",)
@@ -147,7 +151,8 @@ class TemperatureSensorValues(models.Model):
     sensor = models.ForeignKey(
         TemperatureSensor,
         on_delete=models.CASCADE,
-        verbose_name='Датчик температуры'
+        verbose_name='Датчик температуры',
+        related_name='temperaturesensorvalues'
     )
 
     value = models.FloatField(
@@ -160,6 +165,7 @@ class TemperatureSensorValues(models.Model):
     )
 
     class Meta:
+
         verbose_name = "Показания датчика температуры"
         verbose_name_plural = "Показания датчиков температуры"
         ordering = ("-pub_date",)
