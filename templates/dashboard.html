@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Панель управления{% endblock %}
 {% load static %}
-
 {% block content %}
 {% load crispy_forms_tags %}
 {% csrf_token %}
@@ -13,6 +12,17 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
+                         <div class="row">
+                            <div class="col-xl-12 mb-3">
+                               {% load thumbnail %}
+<!--                                {% thumbnail building.image "480x480" -->
+<!--                                crop="center" upscale=True as im %}-->
+                                {% thumbnail building.image "480x480" crop="center" upscale=True as im %}
+
+                                <img src="{{ im.url }}" class="single-card__image">
+                                {% endthumbnail %}
+                            </div>
+                        </div>
                         <ol class="breadcrumb mb-4">
 
 
@@ -34,6 +44,7 @@
                                     Номер телефона инженера по эксплуатации
                                     (для отправки смс-уведомлений)
                                     {{building.phone_number}}
+                                    
                                 </p>
                             </div>
 

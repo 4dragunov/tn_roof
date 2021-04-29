@@ -5,6 +5,10 @@ User = get_user_model()
 
 
 class Building(models.Model):
+    image = models.ImageField(upload_to='sensors/buildings_plans/',
+                              verbose_name='Изображение',
+                              help_text='поле для рисунка',
+                              null=True)
     owner = models.ForeignKey(User,
                               default=1,
                               on_delete=models.CASCADE,

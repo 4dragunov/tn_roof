@@ -1,12 +1,17 @@
-from machine import Pin
+import machine
 import time
+import gc
 
-led_pin = Pin(2,Pin.OUT)
+adc = machine.ADC(0)
 
+def get_data():
+    data = adc.read()
+    print(data)
 while True:
-    led_pin.on()
-    print('on')
-    time.sleep(1)
-    led_pin.off()
-    print('off')
-    time.sleep(1)
+    try:
+        get_data()
+        gc.collect()
+        time.sleep(1)
+    except:
+        print('error')
+

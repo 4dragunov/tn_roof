@@ -17,6 +17,7 @@ class BuildingAdmin(admin.ModelAdmin):
         'adress',
         'phone_number',
         'owner',
+        'image'
     )
 
 
