@@ -1,5 +1,6 @@
 from django.urls import include, path
-
+from django.conf import settings
+from django.conf.urls.static import static
 from sensors.views import index, lk, lk2, dashboard, snow_settings, building_settings
 
 urlpatterns = [
@@ -15,3 +16,5 @@ urlpatterns = [
     path("auth/", include("users.urls")),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
