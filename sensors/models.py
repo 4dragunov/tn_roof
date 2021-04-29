@@ -121,6 +121,30 @@ class TemperatureSensor(models.Model):
         verbose_name = "Датчик температуры"
         verbose_name_plural = "Датчики температуры"
 
+class LeakSensor(models.Model):
+    sens_uid = models.CharField(
+        max_length=100,
+        verbose_name='Уникальный номер системы протечки',
+        unique=True,
+    )
+
+    building = models.ForeignKey(
+        Building,
+        on_delete=models.CASCADE,
+        verbose_name='Объект',
+        related_name='leaksensor'
+    )
+
+
+    def __str__(self):
+        return self.sens_uid
+
+
+    class Meta:
+        verbose_name = "Система мониторинга протечек"
+        verbose_name_plural = "Системы мониторинга протечек"
+
+
 
 class SensorValues(models.Model):
     sensor = models.ForeignKey(
@@ -143,6 +167,36 @@ class SensorValues(models.Model):
 
         verbose_name = "Показания датчиков снега"
         verbose_name_plural = "Показания датчиков снега"
+        ordering = ("-pub_date",)
+
+    def __str__(self):
+        return f'{self.value}'
+
+    def get_value(self):
+        return self.value
+
+class LeakSensorValues(models.Model):
+    sensor = models.ForeignKey(
+        LeakSensor,
+        on_delete=models.CASCADE,
+        verbose_name='Система мониторинга протечек',
+        related_name='leaksensorvalues'
+    )
+
+    value = models.CharField(
+        verbose_name='Показание системы мониторинга протечек',
+        max_length=10000
+    )
+
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата показания',
+    )
+
+    class Meta:
+
+        verbose_name = "Показание системы мониторинга протечек"
+        verbose_name_plural = "Показания системы мониторинга протечек"
         ordering = ("-pub_date",)
 
     def __str__(self):

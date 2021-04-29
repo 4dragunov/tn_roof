@@ -7,6 +7,8 @@ from .models import (
     Weather,
     TemperatureSensor,
     TemperatureSensorValues,
+    LeakSensor,
+    LeakSensorValues
 )
 
 
@@ -61,6 +63,7 @@ class SensorValuesAdmin(admin.ModelAdmin):
         'pub_date',
     )
 
+
 @admin.register(TemperatureSensorValues)
 class TemperatureSensorValuesAdmin(admin.ModelAdmin):
     list_display = (
@@ -69,6 +72,28 @@ class TemperatureSensorValuesAdmin(admin.ModelAdmin):
         'pub_date',
     )
 
+
+@admin.register(LeakSensorValues)
+class LeakSensorValuesAdmin(admin.ModelAdmin):
+    list_display = (
+        'sensor',
+        'value',
+        'pub_date',
+    )
+
+@admin.register(LeakSensor)
+class LeakSensorAdmin(admin.ModelAdmin):
+    list_display = (
+        'sens_uid',
+        'building',
+        'values_count',
+
+    )
+
+    def values_count(self, obj):
+        return LeakSensorValues.objects.filter(sensor_id=obj).count()
+
+    values_count.short_description = 'Число показаний'
 
 
 @admin.register(Weather)

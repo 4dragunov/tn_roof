@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from sensors.models import SensorValues, Sensor, Building, Weather, \
-    TemperatureSensorValues, TemperatureSensor
+    TemperatureSensorValues, TemperatureSensor, LeakSensor, LeakSensorValues
 
 from datetime import date, datetime
 import pandas as pd
@@ -245,6 +245,15 @@ def dashboard(request):
     print(temperature_data)
     print('data')
     print(data)
+
+    # leaksensor = LeakSensor.objects.filter(building_id=building)
+    # leaksensor = get_object_or_404(LeakSensor, building_id=building)
+    leaksensor = LeakSensor.objects.get(building_id=building)
+    if leaksensor:
+        leaksensorvalues = LeakSensorValues.objects.filter(
+            sensor_id=leaksensor).last()
+        leaksensorvalues = str(leaksensorvalues).split(',')
+
     return render(
         request,
         'dashboard.html',
@@ -252,7 +261,8 @@ def dashboard(request):
             'building':building,
             'data': data,
             'temperature': temperature_data,
-            'snow': snow
+            'snow': snow,
+            'leaksensorvalues': leaksensorvalues
         }
     )
 

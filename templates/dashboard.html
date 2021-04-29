@@ -13,14 +13,46 @@
                     <div class="container-fluid">
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
                          <div class="row">
-                            <div class="col-xl-12 mb-3">
+                            <div class="col-xl-8 mb-3">
                                {% load thumbnail %}
 <!--                                {% thumbnail building.image "480x480" -->
 <!--                                crop="center" upscale=True as im %}-->
-                                {% thumbnail building.image "480x480" crop="center" upscale=True as im %}
+                                {% thumbnail building.image "200x250" crop="center" upscale=True as im %}
+                                    <div style="position: relative">
 
-                                <img src="{{ im.url }}" class="single-card__image">
+
+                               <img class="card-img" src="{{ building.image.url }}" />
+                                        <div style="position: absolute;
+                                        top:150px; left: 120px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.0}}
+                                        </div>
+                                        <div style="position: absolute;
+                                        top:150px; left: 450px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.1}} </div>
+
+                                        <div style="position: absolute;
+                                        top:150px; left: 750px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.2}} </div>
+                                        <div style="position: absolute;
+                                        top:400px; left: 120px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.3}} </div>
+                                        <div style="position: absolute;
+                                        top:400px; left: 450px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.4}} </div>
+                                        <div style="position: absolute;
+                                        top:400px; left: 750px;
+                                        font-size:40px">
+                                            {{leaksensorvalues.5}} </div>
+
+                                    </div>
                                 {% endthumbnail %}
+                                </div>
+
                             </div>
                         </div>
                         <ol class="breadcrumb mb-4">
