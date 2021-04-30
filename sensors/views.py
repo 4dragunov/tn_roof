@@ -251,9 +251,11 @@ def dashboard(request):
     leaksensor = LeakSensor.objects.get(building_id=building)
     if leaksensor:
         leaksensorvalues = LeakSensorValues.objects.filter(
-            sensor_id=leaksensor).last()
-        leaksensorvalues = str(leaksensorvalues).split(',')
+            sensor_id=leaksensor).first()
 
+        leaksensorvalues = list(str(leaksensorvalues).strip('[ ]').split(
+            ','))
+        leaksensorvalues = [int(item) for item in leaksensorvalues]
     return render(
         request,
         'dashboard.html',

@@ -24,8 +24,9 @@ class DataSend(APIView):
     def post(self, request):
         sensor_type = request.data['sensor_type'] # получаем тип датчика
         sensor_uid = request.data['sensor_uid']  # получаем sensor_uid из json
-        value = float(request.data['value'])  # получаем value из json
+
         if sensor_type == 'snow':
+            value = float(request.data['value'])  # получаем value из json
             sensor = get_object_or_404(Sensor, sens_uid=sensor_uid)
             SensorValues.objects.create(sensor=sensor, value=value)
             check_max_value(sensor, value)
@@ -34,11 +35,18 @@ class DataSend(APIView):
             response_update_time = sensor.get_response_update_time()
             sensor.save()
         elif sensor_type == 'temperature':
+            value = float(request.data['value'])  # получаем value из json
             sensor = get_object_or_404(TemperatureSensor, sens_uid=sensor_uid)
             TemperatureSensorValues.objects.create(sensor=sensor, value=value)
             response_comand = 'ok'
             response_update_time = 'NULL'
-
+        elif sensor_type == 'leaksensor':
+            value = request.data['value']
+            print(value)
+            sensor = get_object_or_404(LeakSensor, sens_uid=sensor_uid)
+            LeakSensorValues.objects.create(sensor=sensor, value=value)
+            response_comand = 'ok'
+            response_update_time = 'NULL'
 
         building = sensor.building
 
