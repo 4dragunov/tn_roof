@@ -241,10 +241,10 @@ def dashboard(request):
     snow = get_df_for_list(dataframe_weather, 'snow', 'pub_date')
 
     temperature_data.append(['API', temperature])
-    print('temperature_data')
-    print(temperature_data)
-    print('data')
-    print(data)
+    # print('temperature_data')
+    # print(temperature_data)
+    # print('data')
+    # print(data)
 
     # leaksensor = LeakSensor.objects.filter(building_id=building)
     # leaksensor = get_object_or_404(LeakSensor, building_id=building)
@@ -256,6 +256,7 @@ def dashboard(request):
         leaksensorvalues = list(str(leaksensorvalues).strip('[ ]').split(
             ','))
         leaksensorvalues = [int(item) for item in leaksensorvalues]
+
     return render(
         request,
         'dashboard.html',
@@ -264,7 +265,8 @@ def dashboard(request):
             'data': data,
             'temperature': temperature_data,
             'snow': snow,
-            'leaksensorvalues': leaksensorvalues
+            'leaksensorvalues': leaksensorvalues,
+            'img_coordinate': building.img_coordinates['obj']
         }
     )
 

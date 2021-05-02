@@ -6,57 +6,37 @@
 {% csrf_token %}
 {% include 'nav.html' %}
 
+{% load filters %}
 
-
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
+    {% block css %}
+        <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+    {% endblock %}
+                    <div id="layoutSidenav_content">
+                        <main>
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
                          <div class="row">
                             <div class="col-xl-8 mb-3">
-                               {% load thumbnail %}
-<!--                                {% thumbnail building.image "480x480" -->
-<!--                                crop="center" upscale=True as im %}-->
-                                {% thumbnail building.image "200x250" crop="center" upscale=True as im %}
-                                    <div style="position: relative">
+                                    <svg viewBox="0 0 2205.3333 1316" style="position: absolute;left: 0;top: 0;height:100%;width: 100%;">
 
+                         {% for coordinate in img_coordinate %}
+                         {% with data=forloop.counter0|get_value:request.user %}
+                             <a href="#">
+                                 <path class="part" d='{{coordinate}}' fill={{data.fill}} description-data="<img src={{data.img}}> {{data.message}} - {{ data.leaksensorvalues }}" >
+                             </a>
+                         {% endwith %}
+                         {% endfor %}
+                                    </svg>
 
-                               <img class="card-img" src="{{ building.image.url }}" />
-                                        <div style="position: absolute;
-                                        top:150px; left: 120px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.0}}
-                                        </div>
-                                        <div style="position: absolute;
-                                        top:150px; left: 450px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.1}} </div>
-
-                                        <div style="position: absolute;
-                                        top:150px; left: 750px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.2}} </div>
-                                        <div style="position: absolute;
-                                        top:400px; left: 120px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.5}} </div>
-                                        <div style="position: absolute;
-                                        top:400px; left: 450px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.4}} </div>
-                                        <div style="position: absolute;
-                                        top:400px; left: 750px;
-                                        font-size:40px">
-                                            {{leaksensorvalues.3}} </div>
-
-                                    </div>
-                                {% endthumbnail %}
-                                </div>
-
+                                <img src="{{ building.image.url }}" alt="" class="responsive">
                             </div>
-                        </div>
-                        <ol class="breadcrumb mb-4">
 
+                                <div class="description">
+                                </div>
+                            </div>
+
+
+
+                        <ol class="breadcrumb mb-4">
 
                         <div class="row">
                             <div class="col-xl-12 mb-3">
@@ -76,7 +56,7 @@
                                     Номер телефона инженера по эксплуатации
                                     (для отправки смс-уведомлений)
                                     {{building.phone_number}}
-                                    
+
                                 </p>
                             </div>
 
@@ -171,12 +151,9 @@
                                 </div>
                             </div>
 
-
-
-
-
                     </div>
                 </main>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -190,7 +167,7 @@
                     </div>
                 </footer>
             </div>
-        </div>
+
          {% endblock %}
         {% block scripts %}
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
@@ -199,7 +176,7 @@
             <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
             <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
             <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script>
 
@@ -332,6 +309,7 @@
 
 <!--    </script>-->
 
+            <script src="{% static 'js/main.js' %}"></script>
 
             <script src="{% static 'src/assets/demo/datatables-demo.js' %}"></script>
             <script src="{% static 'src/assets/demo/chart-bar-demo.js' %}"></script>

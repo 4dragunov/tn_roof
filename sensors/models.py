@@ -9,6 +9,10 @@ class Building(models.Model):
                               verbose_name='Изображение',
                               help_text='поле для рисунка',
                               null=True)
+    #Координаты для создания SVG плана здания
+    img_coordinates = models.JSONField(
+        verbose_name='Координаты для плана'
+    )
     owner = models.ForeignKey(User,
                               default=1,
                               on_delete=models.CASCADE,
@@ -267,3 +271,5 @@ class Weather(models.Model):
 
     def get_snow_info(self):
         return self.snow
+
+
