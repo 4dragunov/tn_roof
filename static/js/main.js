@@ -1,9 +1,9 @@
 $('.part').hover (
 	function() {
-		$('.description').html($(this).attr('description-data'));
-		$('.description').fadeIn();
+		$('.description_svg').html($(this).attr('description-data'));
+		$('.description_svg').fadeIn();
 	},
 	function() {
-		$('.description').fadeOut(50);
+		$('.description_svg').fadeOut(50);
 	}
 )

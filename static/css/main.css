@@ -11,14 +11,25 @@ body {margin: 0; padding: 0;}
 	cursor: pointer;
 }
 
+.description_svg {
+	box-sizing: border-box;
+	box-shadow: #0c5460;
+	width: 10%;
+	height: 10%;
+	border: 10px;
+	position: fixed;
+	top: 10px;
+	left: 5px;
+}
 
-
-.description img {
-	width: 250px;
+.description_svg img {
+	max-height: 100px;
+	height: 100px;
 	margin-bottom: 20px;
+
 }
 
 .responsive {
-    width: 100%;
+    width: 30%;
     height: auto;
 }

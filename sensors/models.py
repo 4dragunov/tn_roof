@@ -11,7 +11,8 @@ class Building(models.Model):
                               null=True)
     #Координаты для создания SVG плана здания
     img_coordinates = models.JSONField(
-        verbose_name='Координаты для плана'
+        verbose_name='Координаты для плана',
+
     )
     owner = models.ForeignKey(User,
                               default=1,

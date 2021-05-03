@@ -16,13 +16,21 @@
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
                          <div class="row">
                             <div class="col-xl-8 mb-3">
-                                    <svg viewBox="0 0 2205.3333 1316" style="position: absolute;left: 0;top: 0;height:100%;width: 100%;">
+                                <svg viewBox="0 0 2205.3333 1316" style="position: absolute;left: 0;top: 0;height:100%;width: 100%;">
 
                          {% for coordinate in img_coordinate %}
                          {% with data=forloop.counter0|get_value:request.user %}
                              <a href="#">
-                                 <path class="part" d='{{coordinate}}' fill={{data.fill}} description-data="<img src={{data.img}}> {{data.message}} - {{ data.leaksensorvalues }}" >
+                                 <path class="part" d='{{coordinate}}'
+                                       fill={{data.fill}} description-data="<img src={{data.img}}> {{data.message}} - {{ data.leaksensorvalues }} " >
+                                 </path>
+
+
+
+
                              </a>
+
+
                          {% endwith %}
                          {% endfor %}
                                     </svg>
@@ -30,7 +38,18 @@
                                 <img src="{{ building.image.url }}" alt="" class="responsive">
                             </div>
 
-                                <div class="description">
+        <div class="description_svg" id="description_svg">
+            <script>
+                var description = document.getElementById('description_svg');
+                window.onmousemove = function (e) {
+                    var x = e.clientX,
+                        y = e.clientY;
+                    description.style.position = "absolute";
+                    description.style.top = (y + 20) + 'px';
+                    description.style.left = (x + 20) + 'px';
+                    console.log(x)
+                                    };
+                                </script>
                                 </div>
                             </div>
 
