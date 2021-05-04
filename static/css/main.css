@@ -11,25 +11,25 @@ body {margin: 0; padding: 0;}
 	cursor: pointer;
 }
 
-.description_svg {
-	box-sizing: border-box;
-	box-shadow: #0c5460;
-	width: 10%;
-	height: 10%;
-	border: 10px;
-	position: fixed;
-	top: 10px;
-	left: 5px;
-}
-
-.description_svg img {
-	max-height: 100px;
-	height: 100px;
+.description img {
+	width: 250px;
 	margin-bottom: 20px;
-
 }
 
 .responsive {
-    width: 30%;
+    width: 100%;
     height: auto;
+}
+
+.description_svg {
+	display:none;
+	position: absolute;
+	padding: 20px;
+	box-sizing: border-box;
+	width: 300px;
+	height: 400px;
+	box-shadow: 0 0 32px 10px #ccc;
+	right: 250px;
+	top: 50px;
+	font-family: sans-serif;
 }
