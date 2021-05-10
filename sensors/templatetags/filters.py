@@ -38,10 +38,46 @@ def get_value(index, user):
     img = 'https://yt3.ggpht.com/a/AATXAJyRs3loFgPW0Ug_uo7gpng47u_vSWMZ5z-Tdgu7=s900-c-k-c0xffffffff-no-rj-mo'
     fill = "#00a806"
 
-    if leaksensorvalues[index] > 30:
-        message = 'Обнаружена протечка'
+    if 30 < leaksensorvalues[index] <= 60:
+        message = 'Обнаружена протечка!'
         img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
-        fill = "#bf2523"
+        fill = "#ffe500"
+
+    elif 60 < leaksensorvalues[index] <= 100:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#ffb700"
+
+    elif 100 < leaksensorvalues[index] <= 200:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#f90"
+
+    elif 200 < leaksensorvalues[index] <= 300:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#f80"
+
+    elif 300 < leaksensorvalues[index] <= 400:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#ff6a00"
+
+    elif leaksensorvalues[index] > 400:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#ff2f00"
+
+    elif leaksensorvalues[index] > 500:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#f10"
+
+    elif leaksensorvalues[index] > 600:
+        message = 'Обнаружена протечка!'
+        img = "https://avatars.mds.yandex.net/get-zen_doc/168095/pub_5c0ab80c5970ce00a936fceb_5c0aba46006e0000abd77bfa/scale_1200"
+        fill = "#b30c00"
+
 
 
     #Говнокод, потом приберу)))########################################
@@ -57,7 +93,7 @@ def get_value(index, user):
     for i in range(6):
         list_values.append((list_value[0][y], list_value[1][y], list_value[2][y], list_value[3][y]))
         y += 1
-
+    print(list_values)
     charts_url = get_svgcharts(list_values)
 
     context = {
