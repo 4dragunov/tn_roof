@@ -6,8 +6,9 @@ from sensors.models import SensorValues, Sensor, Building, Weather, \
 
 from datetime import date, datetime
 import pandas as pd
-import numpy as np
 from .forms import SensorForm, SensorSettingsForm, BuildingForm
+
+import pygal
 
 
 def index(request):
@@ -257,6 +258,8 @@ def dashboard(request):
             ','))
         leaksensorvalues = [int(item) for item in leaksensorvalues]
 
+
+
     return render(
         request,
         'dashboard.html',
@@ -266,7 +269,7 @@ def dashboard(request):
             'temperature': temperature_data,
             'snow': snow,
             'leaksensorvalues': leaksensorvalues,
-            'img_coordinate': building.img_coordinates['obj']
+            'img_coordinate': building.img_coordinates['obj'],
         }
     )
 

@@ -6,11 +6,28 @@
 {% csrf_token %}
 {% include 'nav.html' %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+{% endblock %}
 {% load filters %}
 
-    {% block css %}
-        <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
-    {% endblock %}
+    <style>
+          .description_svg {
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            padding: 15px;
+            border: 3px solid #0000cc;
+            border-radius: 10px;
+            color: #0000cc;
+          }
+    </style>
+
+
+
+
+    <div class="description"></div>
+
                     <div id="layoutSidenav_content">
                         <main>
                         <h1 class="mt-4 mb-4">Мониторинг</h1>
@@ -21,37 +38,33 @@
                          {% for coordinate in img_coordinate %}
                          {% with data=forloop.counter0|get_value:request.user %}
                              <a href="#">
-                                 <path class="part" d='{{coordinate}}'
-                                       fill={{data.fill}} description-data="<img src={{data.img}}> {{data.message}} - {{ data.leaksensorvalues }} " >
+                                 <path class="part" d='{{ coordinate }}'
+                                       fill={{data.fill}} description-data="<img src={{ data.charts_url }}> {{ data.message }} - {{ data.leaksensorvalues }} {  }" >
                                  </path>
-
-
-
-
                              </a>
-
-
                          {% endwith %}
                          {% endfor %}
                                     </svg>
-
                                 <img src="{{ building.image.url }}" alt="" class="responsive">
                             </div>
 
-        <div class="description_svg" id="description_svg">
+
+        <div class="description_svg" id="description_svg" >
             <script>
                 var description = document.getElementById('description_svg');
                 window.onmousemove = function (e) {
                     var x = e.clientX,
                         y = e.clientY;
                     description.style.position = "absolute";
-                    description.style.top = (y + 20) + 'px';
-                    description.style.left = (x + 20) + 'px';
+                    description.style.top = (y - 30) + 'px';
+                    description.style.left = (x + 15) + 'px';
                     console.log(x)
                                     };
                                 </script>
                                 </div>
                             </div>
+
+
 
 
 
